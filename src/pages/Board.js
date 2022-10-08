@@ -10,28 +10,33 @@ const Board = () => {
   const [columns, setColumns] = useState([]);
   const [cards, setCards] = useState([]);
 
-  //   const fetchColumns = async () => {
-  //     const reponse = await fetch(columnsurl);
-  //     const newColumns = await reponse.json();
-  //     setColumns(newColumns.columns);
-  //     setLoading(false);
-  //   };
+  const fetchColumns = async () => {
+    const reponse = await fetch(columnsurl);
+    const newColumns = await reponse.json();
+    setColumns(newColumns.columns);
+    // setLoading(false);
+  };
 
-  const getCards = () => {
+  const columnIds = columns.map((column) => {
+    return column.columnId;
+  });
+
+  const fetchCards = () => {
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ columnIds: ["col1"] }),
+      body: JSON.stringify({ columnIds: columnIds }),
     };
     fetch("http://localhost:3002/api/cards/getallcards", requestOptions)
       .then((response) => response.json())
-      .then((data) => setCards(data.cards));
+      .then((data) => setCards(data.cards[0]))
+      .then(setLoading(false));
   };
 
   useEffect(() => {
-    // fetchColumns();
-    getCards();
+    fetchColumns();
+    fetchCards();
   }, []);
   if (loading) {
     return (
@@ -40,33 +45,39 @@ const Board = () => {
       </section>
     );
   }
-  console.log(columns);
-
-  //   const cardsUrl = "http://localhost:3002/api/cards/getallcards";
-  //   const fetchCards = async () => {
-  //     const reponse = await fetch(cardsUrl);
-  //     const newCards = await reponse.json();
-  //     setCards(newCards.cards);
-  //     setLoading(false);
-  //   };
-
-  console.log(cards);
 
   return (
     <>
       <h1>{boardId.id}</h1>
-      {/* <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
         {columns.map((column) => {
-          const { columnId, title, cardIds } = column;
+          //   const { columnId, title, cardIds } = column;
           return (
-            <article key={columnId} style={{ border: "1px solid black" }}>
+            <article
+              key={column.columnId}
+              style={{ border: "1px solid black" }}
+            >
               <div>
-                <h4>{title}</h4>
+                <h4>{column.title}</h4>
+                {cards.map((card) => {
+                  //   const { title, cardId } = card;
+                  if (column.cardIds.includes(card.cardId)) {
+                    return (
+                      // <p>Card here</p>
+                      <div
+                        key={card.cardId}
+                        style={{ border: "1px solid black", margin: "10px" }}
+                      >
+                        <h4>{card.title}</h4>
+                      </div>
+                    );
+                  }
+                })}
               </div>
             </article>
           );
         })}
-      </section> */}
+      </section>
     </>
   );
 };
