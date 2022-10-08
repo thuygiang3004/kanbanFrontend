@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Cards from "./Cards";
 
 const Board = () => {
   const boardId = useParams();
@@ -51,15 +52,14 @@ const Board = () => {
       <h1>{boardId.id}</h1>
       <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
         {columns.map((column) => {
-          //   const { columnId, title, cardIds } = column;
+          const { columnId, title, cardIds } = column;
           return (
-            <article
-              key={column.columnId}
-              style={{ border: "1px solid black" }}
-            >
+            <article key={columnId} style={{ border: "1px solid black" }}>
               <div>
-                <h4>{column.title}</h4>
-                {cards.map((card) => {
+                <h4>{title}</h4>
+                <Cards data={"col1"} />
+                {/* {console.log(columnId)} */}
+                {/* {cards.map((card) => {
                   //   const { title, cardId } = card;
                   if (column.cardIds.includes(card.cardId)) {
                     return (
@@ -72,7 +72,7 @@ const Board = () => {
                       </div>
                     );
                   }
-                })}
+                })} */}
               </div>
             </article>
           );
