@@ -19,39 +19,36 @@ const Cards = ({ data }) => {
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
   };
-  console.log(cards);
+  //   console.log(cards);
 
   useEffect(() => {
     fetchCards();
   }, []);
-  if (loading) {
+  //   if (loading) {
+  //     return (
+  //       <section>
+  //         <h1>Loading...</h1>
+  //       </section>
+  //     );
+  //   }
+
+  if (cards != null) {
     return (
-      <section>
-        <h1>Loading...</h1>
-      </section>
+      <>
+        {cards.map((card) => {
+          const { title, cardId } = card;
+          return (
+            <div
+              key={cardId}
+              style={{ border: "1px solid black", margin: "10px" }}
+            >
+              <h4>{title}</h4>
+            </div>
+          );
+        })}
+      </>
     );
   }
-
-  //   if (cards != "undefined") {
-  return (
-    <>
-      {cards.map((card) => {
-        const { title, cardId } = card;
-        return (
-          <div
-            key={cardId}
-            style={{ border: "1px solid black", margin: "10px" }}
-          >
-            <h4>{title}</h4>
-            <h1>Task A</h1>
-          </div>
-        );
-      })}
-    </>
-  );
-  //   } else {
-  //     return <p>No task</p>;
-  //   }
 };
 
 export default Cards;
