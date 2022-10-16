@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Cards = ({ data }) => {
+const Cards = ({ data, reloadCard }) => {
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState([]);
-  //   console.log(data);
+  const reload = reloadCard;
 
   const fetchCards = () => {
     // Simple POST request with a JSON body using fetch
@@ -19,18 +19,10 @@ const Cards = ({ data }) => {
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
   };
-  //   console.log(cards);
 
   useEffect(() => {
     fetchCards();
-  }, []);
-  //   if (loading) {
-  //     return (
-  //       <section>
-  //         <h1>Loading...</h1>
-  //       </section>
-  //     );
-  //   }
+  }, [reload]);
 
   if (cards != null) {
     return (

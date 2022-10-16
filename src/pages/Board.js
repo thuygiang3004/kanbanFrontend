@@ -3,8 +3,10 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Columns from "./Columns";
 import Cards from "./Cards";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const Board = () => {
+  const onDragEnd = () => {};
   const boardId = useParams();
   const location = useLocation();
   //   const a = location.state.boardTitle;
@@ -56,11 +58,14 @@ const Board = () => {
   //   console.log(cards);
   return (
     <>
-      <h1>{boardId.id}</h1>
-      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-        <Columns data={columns} />
-      </section>
-
+      <DragDropContext onDragEnd={onDragEnd}>
+        <h1>{boardId.id}</h1>
+        <section
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}
+        >
+          <Columns data={columns} />
+        </section>
+      </DragDropContext>
       {/* <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
         {columns.map((column) => {
           const { columnId, title, cardIds } = column;
