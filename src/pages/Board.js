@@ -6,7 +6,10 @@ import Cards from "./Cards";
 import { DragDropContext } from "react-beautiful-dnd";
 
 const Board = () => {
-  const onDragEnd = () => {};
+  const onDragEnd = () => {
+    //reordering logic
+  };
+
   const boardId = useParams();
   const location = useLocation();
   //   const a = location.state.boardTitle;

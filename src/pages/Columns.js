@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddTaskModal from "./AddTaskModal";
 import Cards from "./Cards";
 import "./Modal.css";
+import { Droppable } from "react-beautiful-dnd";
 
 const urlPostNewProject = "http://localhost:3002/api/cards/";
 
@@ -55,57 +56,67 @@ const Columns = ({ data }) => {
         const { cardIds, columnId, title, _id } = column;
 
         return (
-          <section
-            key={columnId}
-            style={{ border: "1px solid black", margin: "10px" }}
-          >
-            <h3>{title}</h3>
-            <div>
-              <Cards data={columnId} reloadCard={reload} />
-            </div>
-            <button style={{ backgroundColor: "cyan" }} onClick={toggleModal}>
-              Add task
-            </button>
-            {modal && (
-              <div className="modal">
-                <div onClick={toggleModal} className="overlay"></div>
-                <div className="modal-content">
-                  <form onSubmit={handleSubmit}>
-                    <h2>Add task</h2>
-                    {/* <div>
+          <Droppable droppableId={columnId}>
+            {(provided) => (
+              <section
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                key={columnId}
+                style={{ border: "1px solid black", margin: "10px" }}
+              >
+                <h3>{title}</h3>
+                <div>
+                  <Cards data={columnId} reloadCard={reload} />
+                </div>
+                <button
+                  style={{ backgroundColor: "cyan" }}
+                  onClick={toggleModal}
+                >
+                  Add task
+                </button>
+                {modal && (
+                  <div className="modal">
+                    <div onClick={toggleModal} className="overlay"></div>
+                    <div className="modal-content">
+                      <form onSubmit={handleSubmit}>
+                        <h2>Add task</h2>
+                        {/* <div>
                       <input
                         type="text"
                         value={columnId}
                         disabled
                       />
                     </div> */}
-                    <div className="form-control">
-                      <div>
-                        <label>Status</label>
-                        <input type="text" value={title} disabled />
-                      </div>
-                      <div>
-                        <label>Task Title</label>
-                        <input
-                          type="text"
-                          placeholder="task title"
-                          value={taskTitle}
-                          onChange={(e) => setTaskTitle(e.target.value)}
-                        />
-                      </div>
-                      <button type="submit" className="submit-btn">
-                        Submit
-                      </button>
+                        <div className="form-control">
+                          <div>
+                            <label>Status</label>
+                            <input type="text" value={title} disabled />
+                          </div>
+                          <div>
+                            <label>Task Title</label>
+                            <input
+                              type="text"
+                              placeholder="task title"
+                              value={taskTitle}
+                              onChange={(e) => setTaskTitle(e.target.value)}
+                            />
+                          </div>
+                          <button type="submit" className="submit-btn">
+                            Submit
+                          </button>
+                        </div>
+                        <button className="close-modal" onClick={toggleModal}>
+                          CLOSE
+                        </button>
+                      </form>
                     </div>
-                    <button className="close-modal" onClick={toggleModal}>
-                      CLOSE
-                    </button>
-                  </form>
-                </div>
-              </div>
+                  </div>
+                )}
+                {/* {modal && <AddTaskModal title={title} />} */}
+                {provided.placeholder}
+              </section>
             )}
-            {/* {modal && <AddTaskModal title={title} />} */}
-          </section>
+          </Droppable>
         );
       })}
     </>
