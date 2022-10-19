@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { Draggable } from "react-beautiful-dnd";
 
 const Cards = ({ data, reloadCard }) => {
   const [loading, setLoading] = useState(true);
@@ -27,15 +28,24 @@ const Cards = ({ data, reloadCard }) => {
   if (cards != null) {
     return (
       <>
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           const { title, cardId } = card;
           return (
-            <div
-              key={cardId}
-              style={{ border: "1px solid black", margin: "10px" }}
-            >
-              <h4>{title}</h4>
-            </div>
+            <Draggable draggableId={cardId} index={index}>
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  key={cardId}
+                  style={{ border: "1px solid black", margin: "10px" }}
+                >
+                  <div className="Card">
+                    <h4>{title}</h4>
+                  </div>
+                </div>
+              )}
+            </Draggable>
           );
         })}
       </>
