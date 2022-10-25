@@ -79,7 +79,7 @@ const Boards = () => {
               <Link
                 key={_id}
                 to={`/board/${_id}`}
-                // state={{ boardTitle: "giang" }}
+                state={{ boardTitle: { title } }}
               >
                 {board.title}
               </Link>
