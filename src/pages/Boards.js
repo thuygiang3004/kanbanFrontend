@@ -56,7 +56,7 @@ const Boards = () => {
   };
   useEffect(() => {
     fetchBoards();
-  }, [handleSubmit]);
+  }, []);
 
   if (loading) {
     return (

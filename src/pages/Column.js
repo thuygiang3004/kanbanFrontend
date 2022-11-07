@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AddTaskModal from "./AddTaskModal";
-import Cards from "./Cards";
+import Card from "./Card";
 import "./Modal.css";
 import { Droppable } from "react-beautiful-dnd";
+import uuid from "react-uuid";
 
-const urlPostNewProject = "http://localhost:3002/api/cards/";
+const urlPostNewCard = "http://localhost:3002/api/cards/";
 
 const addTaskToDB = ({ taskData }) => {
   const requestOptions = {
@@ -13,18 +14,40 @@ const addTaskToDB = ({ taskData }) => {
     body: JSON.stringify({
       title: taskData.title,
       columnId: taskData.columnId,
-      cardId: new Date().toString(), //Todo: get dynamically
+      cardId: taskData.cardId,
     }),
   };
-  fetch(urlPostNewProject, requestOptions).then((response) => response.json());
+  fetch(urlPostNewCard, requestOptions).then((response) => response.json());
   // .then(setLoading(false));
 };
 
-const Column = ({ columnId, key, title, cards, index }) => {
+const Column = ({ columnId, title, index, cardIds, reload1 }) => {
+  // console.log(cardIds);
   const [modal, setModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
   const [reload, setReload] = useState(false);
+  const [reload2, setReload2] = useState(reload1);
+
+  // Load card data
+  const [loading, setLoading] = useState(true);
+  const [cards, setCards] = useState([]);
+  const fetchCards = () => {
+    // Simple POST request with a JSON body using fetch
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ columnIds: [columnId] }),
+    };
+    fetch("http://localhost:3002/api/cards/getallcards", requestOptions)
+      .then((response) => response.json())
+      .then((data) => setCards(data.cards[0]))
+      .then(setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchCards();
+  }, [reload, reload2]);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -38,26 +61,39 @@ const Column = ({ columnId, key, title, cards, index }) => {
 
   const handleSubmit = (e, columnId) => {
     e.preventDefault();
-    const taskData = { title: taskTitle, columnId: column };
-    console.log(taskData);
+    const cardId = uuid();
+    const taskData = { title: taskTitle, columnId: column, cardId: cardId };
     addTaskToDB({ taskData });
     toggleModal();
     setReload(!reload);
+    window.location.reload(false);
   };
 
   return (
     <Droppable droppableId={columnId}>
       {(provided) => (
-        <section
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-          key={columnId}
-          style={{ border: "1px solid black", margin: "10px" }}
-        >
+        <div style={{ border: "1px solid black", margin: "10px" }}>
           <h3>{title}</h3>
-          <div>
-            <Cards data={columnId} reloadCard={reload} />
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {cardIds.map((cardId, index) => {
+              const thisCardId = cardIds[index];
+              let card = cards.find((card) => card.cardId == thisCardId);
+              if (card) {
+                return (
+                  <Card
+                    key={card.cardId}
+                    id={card.cardId}
+                    title={card.title}
+                    data={card}
+                    // reloadCard={reload}
+                    index={index}
+                  />
+                );
+              }
+            })}
+            {provided.placeholder}
           </div>
+
           <button style={{ backgroundColor: "cyan" }} onClick={toggleModal}>
             Add task
           </button>
@@ -92,8 +128,7 @@ const Column = ({ columnId, key, title, cards, index }) => {
               </div>
             </div>
           )}
-          {provided.placeholder}
-        </section>
+        </div>
       )}
     </Droppable>
   );
