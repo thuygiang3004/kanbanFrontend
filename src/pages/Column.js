@@ -92,7 +92,7 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   return (
     <Droppable droppableId={columnId}>
       {(provided) => (
-        <div style={{ border: "1px solid black", margin: "10px" }}>
+        <div className="column">
           <h3>{title}</h3>
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {cardIds.map((cardId, index) => {
