@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import "./Modal.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment/moment";
 
 const Card = ({
   data,
@@ -16,6 +17,8 @@ const Card = ({
   cardIds,
 }) => {
   const { title, dueDate, cardId } = data;
+  // dateFormat(dueDate, "shortDate");
+  // const newDueDate = dueDate.ToString("yyyy-MM-dd");
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
@@ -122,11 +125,11 @@ const Card = ({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            style={style}
+            // style={style}
           >
-            <div className="Card">
+            <div className="card">
               <h4>{title}</h4>
-              <p>Due: {dueDate}</p>
+              <p datatype="date">Due: {moment(dueDate).calendar()}</p>
               <button type="button" className="edit-btn" onClick={toggleModal}>
                 <FaEdit />
               </button>

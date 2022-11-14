@@ -164,7 +164,8 @@ const Board = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <h1>{boardTitle.title}</h1>
       <section
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 0.3fr" }}
+        // style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 0.3fr" }}
+        className="board"
       >
         {columns.map((column, index) => {
           const columnx = columns[index];
