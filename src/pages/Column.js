@@ -4,30 +4,21 @@ import Card from "./Card";
 import "./Modal.css";
 import { Droppable } from "react-beautiful-dnd";
 import uuid from "react-uuid";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const urlPostNewCard = "http://localhost:3002/api/cards/";
 
-const addTaskToDB = ({ taskData }) => {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: taskData.title,
-      columnId: taskData.columnId,
-      cardId: taskData.cardId,
-    }),
-  };
-  fetch(urlPostNewCard, requestOptions).then((response) => response.json());
-  // .then(setLoading(false));
-};
-
-const Column = ({ columnId, title, index, cardIds, reload1 }) => {
+const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   // console.log(cardIds);
   const [modal, setModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
-  const [reload, setReload] = useState(false);
-  const [reload2, setReload2] = useState(reload1);
+  // const [reload, setReload] = useState(false);
+  const [cardIdList, setCardIdList] = useState(cardIds);
+
+  // const [value, onChange] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // Load card data
   const [loading, setLoading] = useState(true);
@@ -47,7 +38,11 @@ const Column = ({ columnId, title, index, cardIds, reload1 }) => {
 
   useEffect(() => {
     fetchCards();
-  }, [reload, reload2]);
+  }, [cardIds, cardIdList]);
+
+  useEffect(() => {
+    fetchColumns();
+  }, [cardIdList]);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -59,14 +54,39 @@ const Column = ({ columnId, title, index, cardIds, reload1 }) => {
     document.body.classList.remove("active-modal");
   }
 
+  //Handle when adding task
   const handleSubmit = (e, columnId) => {
     e.preventDefault();
     const cardId = uuid();
-    const taskData = { title: taskTitle, columnId: column, cardId: cardId };
+    const taskData = {
+      title: taskTitle,
+      dueDate: selectedDate,
+      columnId: column,
+      cardId: cardId,
+    };
+
+    const addTaskToDB = async ({ taskData }) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: taskData.title,
+          dueDate: taskData.dueDate,
+          columnId: taskData.columnId,
+          cardId: taskData.cardId,
+        }),
+      };
+      const result = await fetch(urlPostNewCard, requestOptions).then(
+        (response) => response.json()
+      );
+      console.log(result);
+      const newCardId = await result.cardId;
+      setCardIdList((oldCardIdList) => [...oldCardIdList, newCardId]);
+    };
+
     addTaskToDB({ taskData });
     toggleModal();
-    setReload(!reload);
-    window.location.reload(false);
+    // window.location.reload(false);
   };
 
   return (
@@ -84,9 +104,13 @@ const Column = ({ columnId, title, index, cardIds, reload1 }) => {
                     key={card.cardId}
                     id={card.cardId}
                     title={card.title}
+                    columnTitle={title}
+                    columnId={columnId}
                     data={card}
                     // reloadCard={reload}
                     index={index}
+                    fetchCards={fetchCards}
+                    cardIds={cardIds}
                   />
                 );
               }
@@ -109,12 +133,22 @@ const Column = ({ columnId, title, index, cardIds, reload1 }) => {
                       <input type="text" value={title} disabled />
                     </div>
                     <div>
-                      <label>Task Title</label>
+                      <label htmlFor="taskTitle">Task Title</label>
                       <input
                         type="text"
+                        name="taskTitle"
                         placeholder="task title"
                         value={taskTitle}
                         onChange={(e) => setTaskTitle(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="dueDate">Due Date</label>
+                      <DatePicker
+                        name="dueDate"
+                        onChange={(date) => setSelectedDate(date)}
+                        selected={selectedDate}
+                        isClearable
                       />
                     </div>
                     <button type="submit" className="submit-btn">

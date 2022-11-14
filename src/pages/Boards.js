@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import AddProjectModal from "./AddProjectModal";
 import "./Modal.css";
-import DatePicker from "react-date-picker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const urlGetBoards = "http://localhost:3002/api/boards/all";
 const urlPostNewProject = "http://localhost:3002/api/boards/";
-
-const addProjectToDB = ({ projectData }) => {
-  console.log(projectData);
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: projectData.title,
-      dueDate: projectData.dueDate,
-    }),
-  };
-  fetch(urlPostNewProject, requestOptions).then((response) => response.json());
-  // .then(setLoading(false));
-};
 
 const Boards = () => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +17,9 @@ const Boards = () => {
   const [projectTitle, setProjectTitle] = useState("");
   const [dueDate, setDueDate] = useState(new Date());
   const [modal, setModal] = useState(false);
+  const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   //   const [activeColumn, setActiveColumn] = useState();
   const toggleModal = () => {
     setModal(!modal);
@@ -43,9 +33,29 @@ const Boards = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const addProjectToDB = async ({ projectData }) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: projectData.title,
+          dueDate: projectData.dueDate,
+        }),
+      };
+      const addedResult = await fetch(urlPostNewProject, requestOptions).then(
+        (response) => response.json()
+      );
+      const newBoard = await addedResult.result;
+      setBoards((oldBoards) => [...oldBoards, newBoard]);
+      // .then(setLoading(false));
+    };
+
     const projectData = { title: projectTitle, dueDate: value };
     addProjectToDB({ projectData });
+
     toggleModal();
+    // forceUpdate();
   };
 
   const fetchBoards = async () => {
@@ -56,7 +66,7 @@ const Boards = () => {
   };
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [boards]);
 
   if (loading) {
     return (
@@ -115,8 +125,9 @@ const Boards = () => {
                   <label htmlFor="dueDate">Due Date</label>
                   <DatePicker
                     name="dueDate"
-                    onChange={onChange}
-                    value={value}
+                    onChange={(date) => setSelectedDate(date)}
+                    selected={selectedDate}
+                    isClearable
                   />
                 </div>
                 <button type="submit" className="submit-btn">

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import uuid from "react-uuid";
-
 import Column from "./Column";
-
 import { DragDropContext } from "react-beautiful-dnd";
+import "./Modal.css";
 
 const urlReorderCardSameColumn =
   "http://localhost:3002/api/cards/reorder/samecolumn";
@@ -20,39 +19,13 @@ const reorderCardSameColumn = (columnId, cardIds) => {
       samecolumnCardIds: cardIds,
     }),
   };
-  fetch(urlReorderCardSameColumn, requestOptions)
-    .then((response) => response.json())
-    .then(console.log("updated"));
-  // .then(setLoading(false));
+  fetch(urlReorderCardSameColumn, requestOptions).then((response) =>
+    response.json()
+  );
 };
 
 const urlReorderCardDifferentColumn =
   "http://localhost:3002/api/cards/reorder/differentcolumn";
-const reorderCardDifferentColumn = (
-  pulledOutCardId,
-  removedColumnId,
-  addedColumnId,
-  removedColumnCardIds,
-  addedColumnCardIds
-) => {
-  // console.log(removedColumnCardIds);
-
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      reorderedCardId: pulledOutCardId,
-      removedColumnId: removedColumnId,
-      addedColumnId: addedColumnId,
-      removedColumnCardIds: removedColumnCardIds,
-      addedColumnCardIds: addedColumnCardIds,
-    }),
-  };
-  fetch(urlReorderCardDifferentColumn, requestOptions)
-    .then((response) => response.json())
-    .then(console.log("updated"));
-  // .then(setLoading(false));
-};
 
 const urlPostNewColumn = "http://localhost:3002/api/columns/";
 const addColumnToDB = (title, boardId, columnId) => {
@@ -69,7 +42,6 @@ const addColumnToDB = (title, boardId, columnId) => {
     }),
   };
   fetch(urlPostNewColumn, requestOptions).then((response) => response.json());
-  // .then(setLoading(false));
 };
 
 const Board = () => {
@@ -78,14 +50,14 @@ const Board = () => {
 
   const [loading, setLoading] = useState(true);
   const [columns, setColumns] = useState([]);
-  const [reload1, setReload1] = useState(false);
 
   const location = useLocation();
   const { boardTitle } = location.state;
-  // console.log(boardTitle);
 
   const [modal, setModal] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
+
+  const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const onDragEnd = (result) => {
     // console.log(result);
@@ -108,6 +80,29 @@ const Board = () => {
     }
 
     //If different column
+    const reorderCardDifferentColumn = async (
+      pulledOutCardId,
+      removedColumnId,
+      addedColumnId,
+      removedColumnCardIds,
+      addedColumnCardIds
+    ) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reorderedCardId: pulledOutCardId,
+          removedColumnId: removedColumnId,
+          addedColumnId: addedColumnId,
+          removedColumnCardIds: removedColumnCardIds,
+          addedColumnCardIds: addedColumnCardIds,
+        }),
+      };
+      const result = await fetch(urlReorderCardDifferentColumn, requestOptions)
+        .then((response) => response.json())
+        .then(forceUpdate());
+    };
+
     if (destination.droppableId != source.droppableId) {
       const sourceColumnId = source.droppableId;
 
@@ -116,9 +111,7 @@ const Board = () => {
       );
 
       const pulledOutCardId = sourceColumn.cardIds.splice(source.index, 1);
-      // console.log(pulledOutCardId);
       const removedColumnCardIds = sourceColumn.cardIds;
-      // console.log(removedColumnCardIds);
       targetColumn.cardIds.splice(destination.index, 0, ...pulledOutCardId);
       const addedColumnCardIds = targetColumn.cardIds;
       // console.log(addedColumnCardIds);
@@ -129,8 +122,6 @@ const Board = () => {
         removedColumnCardIds,
         addedColumnCardIds
       );
-      setReload1(!reload1);
-      window.location.reload(false);
     }
   };
 
@@ -148,7 +139,6 @@ const Board = () => {
     const columnId = uuid();
     addColumnToDB(columnTitle, boardId.id, columnId);
     toggleModal();
-    // setReload(!reload);
     window.location.reload(false);
   };
 
@@ -157,12 +147,11 @@ const Board = () => {
     const newColumns = await reponse.json();
     setColumns(newColumns.columns);
     setLoading(false);
-    // console.log(columns);
   };
 
   useEffect(() => {
     fetchColumns();
-  }, [setReload1]);
+  }, [reducerValue]);
   if (loading) {
     return (
       <section>
@@ -187,7 +176,7 @@ const Board = () => {
               title={columnx.title}
               cardIds={columnx.cardIds}
               index={index}
-              reload1={reload1}
+              fetchColumns={fetchColumns}
             />
           );
         })}
