@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
-import axios from "axios";
-import uuid from "react-uuid";
-import Column from "./Column";
-import { DragDropContext } from "react-beautiful-dnd";
-import "./Modal.css";
+import React, { useState, useEffect, useReducer } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import uuid from 'react-uuid';
+import Column from './Column';
+import { DragDropContext } from 'react-beautiful-dnd';
+import './Modal.css';
 
 const urlReorderCardSameColumn =
-  "http://localhost:3002/api/cards/reorder/samecolumn";
+  'http://localhost:3002/api/cards/reorder/samecolumn';
 const reorderCardSameColumn = (columnId, cardIds) => {
   console.log(columnId);
   console.log(cardIds);
   const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       sameColumnId: columnId,
       samecolumnCardIds: cardIds,
@@ -25,16 +25,16 @@ const reorderCardSameColumn = (columnId, cardIds) => {
 };
 
 const urlReorderCardDifferentColumn =
-  "http://localhost:3002/api/cards/reorder/differentcolumn";
+  'http://localhost:3002/api/cards/reorder/differentcolumn';
 
-const urlPostNewColumn = "http://localhost:3002/api/columns/";
+const urlPostNewColumn = 'http://localhost:3002/api/columns/';
 const addColumnToDB = (title, boardId, columnId) => {
   console.log(title);
   console.log(boardId);
   console.log(columnId);
   const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       title: title,
       columnId: columnId,
@@ -46,7 +46,7 @@ const addColumnToDB = (title, boardId, columnId) => {
 
 const Board = () => {
   const boardId = useParams();
-  const columnsurl = "http://localhost:3002/api/columns/all/" + boardId.id;
+  const columnsurl = 'http://localhost:3002/api/columns/all/' + boardId.id;
 
   const [loading, setLoading] = useState(true);
   const [columns, setColumns] = useState([]);
@@ -55,7 +55,7 @@ const Board = () => {
   const { boardTitle } = location.state;
 
   const [modal, setModal] = useState(false);
-  const [columnTitle, setColumnTitle] = useState("");
+  const [columnTitle, setColumnTitle] = useState('');
 
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
 
@@ -88,8 +88,8 @@ const Board = () => {
       addedColumnCardIds
     ) => {
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           reorderedCardId: pulledOutCardId,
           removedColumnId: removedColumnId,
@@ -112,6 +112,7 @@ const Board = () => {
 
       const pulledOutCardId = sourceColumn.cardIds.splice(source.index, 1);
       const removedColumnCardIds = sourceColumn.cardIds;
+      // NOTE: Possible Bug??
       targetColumn.cardIds.splice(destination.index, 0, ...pulledOutCardId);
       const addedColumnCardIds = targetColumn.cardIds;
       // console.log(addedColumnCardIds);
@@ -129,9 +130,9 @@ const Board = () => {
     setModal(!modal);
   };
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   const handleSubmit = (e) => {
@@ -162,7 +163,9 @@ const Board = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <h1>{boardTitle.title}</h1>
+      <section className="board-title">
+        <h1>{boardTitle.title}</h1>
+      </section>
       <section
         // style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 0.3fr" }}
         className="board"
@@ -182,13 +185,10 @@ const Board = () => {
           );
         })}
 
-        <div style={{ margin: "10px" }}>
-          {" "}
-          <button
-            style={{ backgroundColor: "#283618", color: "#fefae0" }}
-            onClick={toggleModal}
-          >
-            Add List
+        <div className="newcol-div">
+          {' '}
+          <button className="newcol-btn btn" onClick={toggleModal}>
+            Add Swimlane
           </button>
         </div>
 
@@ -199,7 +199,7 @@ const Board = () => {
               <form onSubmit={handleSubmit}>
                 <h2>Add List</h2>
                 <div className="form-control">
-                  <div>
+                  <div className="form-group">
                     <label>List Title</label>
                     <input
                       type="text"
@@ -208,12 +208,12 @@ const Board = () => {
                       onChange={(e) => setColumnTitle(e.target.value)}
                     />
                   </div>
-                  <button type="submit" className="submit-btn">
+                  <button type="submit" className="submit-btn btn">
                     Submit
                   </button>
                 </div>
                 <button className="close-modal" onClick={toggleModal}>
-                  CLOSE
+                  &times;
                 </button>
               </form>
             </div>
