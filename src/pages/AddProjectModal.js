@@ -1,14 +1,14 @@
-import "./Modal.css";
-import React, { useState } from "react";
-import DatePicker from "react-date-picker";
+import './Modal.css';
+import React, { useState } from 'react';
+import DatePicker from 'react-date-picker';
 
 const addProjectToDB = ({ projectData }) => {
   const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title: projectData.title }),
   };
-  fetch("http://localhost:3002/api/boards/", requestOptions).then((response) =>
+  fetch('http://localhost:3002/api/boards/', requestOptions).then((response) =>
     response.json()
   );
   // .then(setLoading(false));
@@ -17,7 +17,7 @@ const addProjectToDB = ({ projectData }) => {
 function AddProjectModal() {
   const [modal, setModal] = useState(false);
   const [value, onChange] = useState(new Date());
-  const [projectTitle, setProjectTitle] = useState("");
+  const [projectTitle, setProjectTitle] = useState('');
   const [dueDate, setDueDate] = useState(new Date());
 
   const toggleModal = () => {
@@ -26,9 +26,9 @@ function AddProjectModal() {
   };
 
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   const handleSubmit = (e) => {
@@ -62,12 +62,12 @@ function AddProjectModal() {
                 value={dueDate}
               />
             </div>
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn btn">
               Submit
             </button>
           </div>
           <button className="close-modal" onClick={toggleModal}>
-            CLOSE
+            &times;
           </button>
         </form>
       </div>

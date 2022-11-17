@@ -1,5 +1,5 @@
-import "./Modal.css";
-import React, { useState } from "react";
+import './Modal.css';
+import React, { useState } from 'react';
 
 function AddTaskModal({ title }) {
   console.log(title);
@@ -9,9 +9,9 @@ function AddTaskModal({ title }) {
   };
 
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
   return (
     <div className="modal">
@@ -22,12 +22,12 @@ function AddTaskModal({ title }) {
           <div className="form-control">
             <input type="text" value={title} />
             <input type="text" placeholder="task title" />
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn btn">
               Submit
             </button>
           </div>
           <button className="close-modal" onClick={toggleModal}>
-            CLOSE
+            &times;
           </button>
         </form>
       </div>

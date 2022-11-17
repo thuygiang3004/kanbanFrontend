@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import AddTaskModal from "./AddTaskModal";
-import Card from "./Card";
-import "./Modal.css";
-import { Droppable } from "react-beautiful-dnd";
-import uuid from "react-uuid";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from 'react';
+import AddTaskModal from './AddTaskModal';
+import Card from './Card';
+import './Modal.css';
+import { Droppable } from 'react-beautiful-dnd';
+import uuid from 'react-uuid';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const urlPostNewCard = "http://localhost:3002/api/cards/";
+const urlPostNewCard = 'http://localhost:3002/api/cards/';
 
 const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   // console.log(cardIds);
   const [modal, setModal] = useState(false);
-  const [taskTitle, setTaskTitle] = useState("");
+  const [taskTitle, setTaskTitle] = useState('');
   const [column, setColumn] = useState(columnId);
   // const [reload, setReload] = useState(false);
   const [cardIdList, setCardIdList] = useState(cardIds);
@@ -26,11 +26,11 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   const fetchCards = () => {
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ columnIds: [columnId] }),
     };
-    fetch("http://localhost:3002/api/cards/getallcards", requestOptions)
+    fetch('http://localhost:3002/api/cards/getallcards', requestOptions)
       .then((response) => response.json())
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
@@ -49,9 +49,9 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   };
 
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   //Handle when adding task
@@ -67,8 +67,8 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
 
     const addTaskToDB = async ({ taskData }) => {
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: taskData.title,
           dueDate: taskData.dueDate,
@@ -94,6 +94,12 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
       {(provided) => (
         <div className="column">
           <h3>{title}</h3>
+          <div className="add-task-btn-div">
+            <button className="add-task-btn btn" onClick={toggleModal}>
+              Add task
+            </button>
+          </div>
+
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {cardIds.map((cardId, index) => {
               const thisCardId = cardIds[index];
@@ -118,9 +124,6 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
             {provided.placeholder}
           </div>
 
-          <button style={{ backgroundColor: "cyan" }} onClick={toggleModal}>
-            Add task
-          </button>
           {modal && (
             <div className="modal">
               <div onClick={toggleModal} className="overlay"></div>
@@ -128,11 +131,11 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
                 <form onSubmit={handleSubmit}>
                   <h2>Add task</h2>
                   <div className="form-control">
-                    <div>
+                    <div className="form-group">
                       <label>Status</label>
                       <input type="text" value={title} disabled />
                     </div>
-                    <div>
+                    <div className="form-group">
                       <label htmlFor="taskTitle">Task Title</label>
                       <input
                         type="text"
@@ -142,7 +145,7 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
                         onChange={(e) => setTaskTitle(e.target.value)}
                       />
                     </div>
-                    <div>
+                    <div className="form-group">
                       <label htmlFor="dueDate">Due Date</label>
                       <DatePicker
                         name="dueDate"
@@ -151,12 +154,12 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
                         isClearable
                       />
                     </div>
-                    <button type="submit" className="submit-btn">
+                    <button type="submit" className="submit-btn btn">
                       Submit
                     </button>
                   </div>
                   <button className="close-modal" onClick={toggleModal}>
-                    CLOSE
+                    &times;
                   </button>
                 </form>
               </div>
