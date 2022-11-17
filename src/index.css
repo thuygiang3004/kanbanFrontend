@@ -83,7 +83,8 @@ nav > ul > li {
 }
 
 .card {
-  /* position: relative; */
+  margin: 0 0 1rem 0;
+  padding: 0.75rem;
   max-width: 100%;
   word-wrap: break-word;
   box-shadow: 0 0 2px white;
