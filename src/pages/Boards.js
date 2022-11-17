@@ -87,7 +87,7 @@ const Boards = () => {
           return (
             <article key={_id} style={{ border: "1px solid white" }}>
               <div>
-                <h4>ID: {_id}</h4>
+                <h4 style={{ display: "none" }}>ID: {_id}</h4>
                 <h4>
                   {" "}
                   Project Title :{" "}
