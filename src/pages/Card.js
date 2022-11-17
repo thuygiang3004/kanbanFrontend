@@ -25,6 +25,9 @@ const Card = ({
   const [selectedDate, setSelectedDate] = useState(
     dueDate ? new Date(dueDate) : null
   );
+  //   const [selectedDate, setSelectedDate] = useState(
+  //     dueDate ? Date.parse(moment(dueDate, 'MM/DD/YYYY').toISOString()) : null
+  // );
   const [cardIdList, setCardIdList] = useState(cardIds);
 
   const toggleModal = () => {
@@ -164,12 +167,21 @@ const Card = ({
                         </div>
                         <div className="form-group">
                           <label htmlFor="dueDate">Due Date</label>
-                          <DatePicker
-                            name="dueDate"
-                            onChange={(date) => setSelectedDate(date)}
-                            selected={selectedDate}
-                            isClearable
-                          />
+                          {
+                            <DatePicker
+                              name="dueDate"
+                              onChange={(date) => setSelectedDate(date)}
+                              selected={selectedDate}
+                              // selected={event.start ? new Date(event.start) : null}
+                              isClearable
+                            />
+
+                            // <DatePicker
+                            // selected={this.state.date}
+                            // onChange={(value)=> {
+                            //   this.setState({date: moment(value)})
+                            //  }}
+                          }
                         </div>
                         <button type="submit" className="submit-btn btn">
                           Submit

@@ -18,6 +18,9 @@ function App() {
           <li>
             <Link to="/boards">Boards</Link>
           </li>
+          <li>
+            <Link to="/register">Register / Sign In</Link>
+          </li>
         </ul>
       </nav>
       <Routes>

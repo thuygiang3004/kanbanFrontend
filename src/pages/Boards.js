@@ -36,6 +36,7 @@ const Boards = () => {
     e.preventDefault();
 
     const addProjectToDB = async ({ projectData }) => {
+
       const addedResult = await axios.post(
         urlPostNewProject,
         JSON.stringify({
@@ -83,70 +84,75 @@ const Boards = () => {
 
   return (
     <section>
-      <h2>Boards List</h2>
-      <button className="new-project-btn btn" onClick={toggleModal}>
-        Create new project
-      </button>
+      <div className="boards-section">
+        <h2>Boards List</h2>
+        <button className="new-project-btn btn" onClick={toggleModal}>
+          Create new project
+        </button>
 
-      {boards.map((board) => {
-        const { _id, title, dueDate } = board;
-        return (
-          <article key={_id} style={{ border: "1px solid white" }}>
-            <div>
-              <h4>ID: {_id}</h4>
-              <Link
-                key={_id}
-                to={`/board/${_id}`}
-                state={{ boardTitle: { title } }}
-              >
-                {board.title}
-              </Link>
+        {boards.map((board) => {
+          const { _id, title, dueDate } = board;
+          return (
+            <article key={_id} style={{ border: "1px solid white" }}>
               <div>
-                <p>Due Date: </p>
-                <p>{dueDate}</p>
+                <h4 style={{ display: "none" }}>ID: {_id}</h4>
+                <h3>
+                  {" "}
+                  Project Title :{" "}
+                  <Link
+                    key={_id}
+                    to={`/board/${_id}`}
+                    state={{ boardTitle: { title } }}
+                  >
+                    {board.title}
+                  </Link>
+                </h3>
+                <div>
+                  <p> Due Date: {dueDate}</p>
+                </div>
               </div>
-            </div>
-          </article>
-        );
-      })}
+            </article>
+          );
+        })}
 
-      {modal && (
-        <div className="modal modal-new-project">
-          <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-            <form onSubmit={handleSubmit}>
-              <h2>Create new project</h2>
-              <div className="form-control">
-                <div className="form-group">
-                  <label htmlFor="projectTitle">Project title</label>
-                  <input
-                    name="projectTitle"
-                    type="text"
-                    placeholder="Project title"
-                    value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
-                  />
+        {modal && (
+          <div className="modal modal-new-project">
+            <div onClick={toggleModal} className="overlay"></div>
+            <div className="modal-content">
+              <form onSubmit={handleSubmit}>
+                <h2>Create new project</h2>
+                <div className="form-control">
+                  <div className="form-group">
+                    <label htmlFor="projectTitle">Project title</label>
+                    <input
+                      name="projectTitle"
+                      type="text"
+                      placeholder="Project title"
+                      value={projectTitle}
+                      onChange={(e) => setProjectTitle(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="dueDate">Due Date</label>
+                    <DatePicker
+                      name="dueDate"
+                      onChange={(date) => setSelectedDate(date)}
+                      selected={selectedDate}
+                      isClearable
+                    />
+                  </div>
+                  <button type="submit" className="submit-btn btn">
+                    Submit
+                  </button>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="dueDate">Due Date</label>
-                  <DatePicker
-                    name="dueDate"
-                    onChange={(date) => setSelectedDate(date)}
-                    selected={selectedDate}
-                    isClearable
-                  />
-                </div>
-                <button type="submit" className="submit-btn btn">
-                  Submit
+                <button className="close-modal" onClick={toggleModal}>
+                  &times;
                 </button>
-              </div>
-              <button className="close-modal" onClick={toggleModal}>
-                &times;
-              </button>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 };
