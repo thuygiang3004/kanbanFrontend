@@ -4,15 +4,15 @@ import "./Modal.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const urlGetBoards = "http://localhost:3002/api/boards/all";
-const urlPostNewProject = "http://localhost:3002/api/boards/";
+const urlGetBoards = 'http://localhost:3002/api/boards/all';
+const urlPostNewProject = 'http://localhost:3002/api/boards/';
 
 const Boards = () => {
   const [loading, setLoading] = useState(true);
   const [boards, setBoards] = useState([]);
 
   const [value, onChange] = useState(new Date());
-  const [projectTitle, setProjectTitle] = useState("");
+  const [projectTitle, setProjectTitle] = useState('');
   const [dueDate, setDueDate] = useState(new Date());
   const [modal, setModal] = useState(false);
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -24,9 +24,9 @@ const Boards = () => {
   };
 
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   const handleSubmit = (e) => {
@@ -34,8 +34,8 @@ const Boards = () => {
 
     const addProjectToDB = async ({ projectData }) => {
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: projectData.title,
           dueDate: projectData.dueDate,
@@ -77,11 +77,14 @@ const Boards = () => {
   return (
     <section>
       <h2>Boards List</h2>
+      <button className="new-project-btn btn" onClick={toggleModal}>
+        Create new project
+      </button>
+
       {boards.map((board) => {
         const { _id, title, dueDate } = board;
-
         return (
-          <article key={_id} style={{ border: "1px solid black" }}>
+          <article key={_id} style={{ border: '1px solid white' }}>
             <div>
               <h4>ID: {_id}</h4>
               <Link
@@ -99,17 +102,15 @@ const Boards = () => {
           </article>
         );
       })}
-      <button style={{ backgroundColor: "cyan" }} onClick={toggleModal}>
-        Create new project
-      </button>
+
       {modal && (
-        <div className="modal">
+        <div className="modal modal-new-project">
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
             <form onSubmit={handleSubmit}>
               <h2>Create new project</h2>
               <div className="form-control">
-                <div>
+                <div className="form-group">
                   <label htmlFor="projectTitle">Project title</label>
                   <input
                     name="projectTitle"
@@ -119,7 +120,7 @@ const Boards = () => {
                     onChange={(e) => setProjectTitle(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className="form-group">
                   <label htmlFor="dueDate">Due Date</label>
                   <DatePicker
                     name="dueDate"
@@ -128,12 +129,12 @@ const Boards = () => {
                     isClearable
                   />
                 </div>
-                <button type="submit" className="submit-btn">
+                <button type="submit" className="submit-btn btn">
                   Submit
                 </button>
               </div>
               <button className="close-modal" onClick={toggleModal}>
-                CLOSE
+                &times;
               </button>
             </form>
           </div>

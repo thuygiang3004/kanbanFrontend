@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Draggable } from "react-beautiful-dnd";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import "./Modal.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment/moment";
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Draggable } from 'react-beautiful-dnd';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import './Modal.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment/moment';
 
 const Card = ({
   data,
@@ -39,15 +39,15 @@ const Card = ({
   };
 
   if (deleteModal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   if (modal) {
-    document.body.classList.add("active-modal");
+    document.body.classList.add('active-modal');
   } else {
-    document.body.classList.remove("active-modal");
+    document.body.classList.remove('active-modal');
   }
 
   const handleSubmit = async (e) => {
@@ -57,8 +57,8 @@ const Card = ({
       const urlEditCard = `http://localhost:3002/api/cards/card/${taskData.cardId}`;
       console.log(taskData);
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cardId: taskData.cardId,
           title: taskData.taskTitle,
@@ -90,8 +90,8 @@ const Card = ({
 
     const removeTaskfromDB = async () => {
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cardId: cardId,
           columnId: columnId,
@@ -116,10 +116,10 @@ const Card = ({
     <Draggable draggableId={String(id)} index={index} key={cardId}>
       {(provided, snapshot) => {
         const style = {
-          border: "1px solid black",
-          margin: "10px",
-          background: "#454B1B",
-          color: "#FFFFFF",
+          border: '1px solid black',
+          margin: '10px',
+          background: '#454B1B',
+          color: '#FFFFFF',
           ...provided.draggableProps.style,
         };
 
@@ -145,17 +145,17 @@ const Card = ({
               </button>
 
               {modal && (
-                <div className="modal" style={{ color: "black" }}>
+                <div className="modal">
                   <div onClick={toggleModal} className="overlay"></div>
                   <div className="modal-content">
                     <form onSubmit={handleSubmit}>
                       <h2>Edit task</h2>
                       <div className="form-control">
-                        <div>
+                        <div className="form-group">
                           <label>Status</label>
                           <input type="text" value={columnTitle} disabled />
                         </div>
-                        <div>
+                        <div className="form-group">
                           <label htmlFor="taskTitle">Task Title</label>
                           <input
                             type="text"
@@ -165,7 +165,7 @@ const Card = ({
                             onChange={(e) => setTaskTitle(e.target.value)}
                           />
                         </div>
-                        <div>
+                        <div className="form-group">
                           <label htmlFor="dueDate">Due Date</label>
                           {
                             <DatePicker
@@ -183,12 +183,12 @@ const Card = ({
                             //  }}
                           }
                         </div>
-                        <button type="submit" className="submit-btn">
+                        <button type="submit" className="submit-btn btn">
                           Submit
                         </button>
                       </div>
                       <button className="close-modal" onClick={toggleModal}>
-                        CLOSE
+                        &times;
                       </button>
                     </form>
                   </div>
@@ -196,17 +196,17 @@ const Card = ({
               )}
 
               {deleteModal && (
-                <div className="modal" style={{ color: "black" }}>
+                <div className="modal">
                   <div onClick={toggleDeleteModal} className="overlay"></div>
                   <div className="modal-content">
                     <form onSubmit={handleDeleteSubmit}>
                       <h2>Would you like to delete this task?</h2>
                       <div className="form-control">
-                        <div>
+                        <div className="form-group">
                           <label>Status</label>
                           <input type="text" value={columnTitle} disabled />
                         </div>
-                        <div>
+                        <div className="form-group">
                           <label htmlFor="taskTitle">Task Title</label>
                           <input
                             type="text"
@@ -215,7 +215,7 @@ const Card = ({
                             disabled
                           />
                         </div>
-                        <div>
+                        <div className="form-group">
                           <label htmlFor="dueDate">Due Date</label>
                           <DatePicker
                             name="dueDate"
@@ -223,7 +223,7 @@ const Card = ({
                             disabled
                           />
                         </div>
-                        <button type="submit" className="submit-btn">
+                        <button type="submit" className="submit-btn btn">
                           Delete
                         </button>
                       </div>
@@ -231,7 +231,7 @@ const Card = ({
                         className="close-modal"
                         onClick={toggleDeleteModal}
                       >
-                        CLOSE
+                        &times;
                       </button>
                     </form>
                   </div>

@@ -1,3 +1,15 @@
+:root {
+  --clr-light: #242732;
+  --clr-medium: #1f2229;
+  --clr-dark: #1a1c22;
+
+  --clr-accent-primary: #59c3c3;
+  --clr-accent-secondary: #fdfffc;
+
+  --clr-text-primary: white;
+  --clr-text-secondary: black;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -5,6 +17,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--clr-accent-secondary);
 }
 
 code {
@@ -14,24 +27,28 @@ code {
 
 main {
   margin: auto;
-  width: 1100px;
+  max-width: 1100px;
+  min-height: 100vh;
+  background-color: var(--clr-medium);
+  color: var(--clr-text-primary);
 }
 
 nav {
-  background-color: #fcf6bd;
-  text-align: left;
+  background-color: var(--clr-dark);
+  text-align: center;
   padding: 20px 0;
 }
 
 nav a {
   font-size: 22px;
   font-weight: bold;
-  color: black;
+  color: white;
   text-decoration: none;
   padding: 0 40px;
 }
 nav a:hover {
-  color: #16554d;
+  color: var(--clr-accent-primary);
+  text-decoration: underline;
 }
 nav ul {
   list-style-type: none;
@@ -47,26 +64,31 @@ nav > ul > li {
 .board {
   display: flex;
   flex-direction: row;
+  background-color: var(--clr-medium);
 }
 
 .column {
   background-color: #dfe3e6;
+  background-color: var(--clr-light);
   border-radius: 3px;
   width: 25%;
-  padding: 8px;
+  padding: 1rem;
   height: 100%;
-  margin: 0 8px 0 0;
+  margin: 1rem 0.5rem;
+  border-radius: 5px;
+}
+
+.column h3 {
+  color: var(--clr-text-primary);
 }
 
 .card {
-  margin: 0 0 8px 0;
-  padding: 3px;
-  /* position: relative;*/
+  /* position: relative; */
   max-width: 100%;
   word-wrap: break-word;
-  box-shadow: 0 0 2px #264653;
-  /* border: 1px solid black; */
-  background: #454b1b;
+  box-shadow: 0 0 2px white;
+  border-radius: 5px;
+  background: var(--clr-medium);
   color: #ffffff;
 }
 
@@ -171,4 +193,104 @@ button {
 
 .line {
   display: inline-block;
+}
+.card h4 {
+  margin: 0;
+}
+
+.board-title {
+  background-color: var(--clr-medium);
+}
+
+.board-title h1 {
+  margin: 0;
+  padding: 1rem;
+  color: var(--clr-text-primary);
+}
+
+.newcol-div {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 140px;
+}
+
+.newcol-btn {
+  margin: 1rem;
+}
+
+main a {
+  color: var(--clr-text-primary);
+}
+
+article {
+  padding: 1rem;
+}
+
+section h2 {
+  padding: 1rem;
+}
+
+.btn {
+  background-color: var(--clr-accent-primary);
+  border-radius: 7px;
+  padding: 0.5em 0.75em;
+  color: var(--clr-text-secondary);
+  font-weight: bold;
+  border: 1px solid;
+}
+
+.btn:hover {
+  background-color: var(--clr-dark);
+  color: var(--clr-text-primary);
+  border: 1px solid var(--clr-accent-primary);
+}
+
+.column h3 {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--clr-accent-primary);
+  text-decoration-thickness: 3px;
+}
+
+.add-task-btn-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.add-task-btn {
+  margin-bottom: 1rem;
+  min-width: 90%;
+  margin-inline: auto;
+}
+
+.new-project-btn {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.modal .form-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 1rem;
+}
+
+.modal .form-group input {
+  height: 1.25rem;
+}
+
+.modal .form-control div label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.modal .form-control input {
+  background-color: var(--clr-dark);
+  color: var(--clr-text-primary);
+}
+
+.modal .form-control .react-datepicker-popper {
+  display: block;
+  margin-bottom: 0;
 }
