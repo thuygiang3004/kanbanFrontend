@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Modal.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 
 const urlGetBoards = "http://localhost:3002/api/boards/all";
 const urlPostNewProject = "http://localhost:3002/api/boards/";
@@ -18,7 +20,8 @@ const Boards = () => {
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  //   const [activeColumn, setActiveColumn] = useState();
+  const { auth } = useContext(AuthContext);
+
   const toggleModal = () => {
     setModal(!modal);
   };
@@ -29,37 +32,42 @@ const Boards = () => {
     document.body.classList.remove("active-modal");
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const addProjectToDB = async ({ projectData }) => {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+
+      const addedResult = await axios.post(
+        urlPostNewProject,
+        JSON.stringify({
           title: projectData.title,
           dueDate: projectData.dueDate,
         }),
-      };
-      const addedResult = await fetch(urlPostNewProject, requestOptions).then(
-        (response) => response.json()
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + auth.accessToken,
+          },
+        }
       );
-      const newBoard = await addedResult.result;
+      const newBoard = await addedResult.data.result;
       setBoards((oldBoards) => [...oldBoards, newBoard]);
-      // .then(setLoading(false));
     };
 
     const projectData = { title: projectTitle, dueDate: value };
     addProjectToDB({ projectData });
 
     toggleModal();
-    // forceUpdate();
   };
 
   const fetchBoards = async () => {
-    const reponse = await fetch(urlGetBoards);
-    const newBoards = await reponse.json();
-    setBoards(newBoards.boards);
+    const response = await axios.get(urlGetBoards, {
+      headers: {
+        authorization: "Bearer " + auth.accessToken,
+      },
+    });
+    const newBoards = await response.data.boards;
+    setBoards(newBoards);
     setLoading(false);
   };
   useEffect(() => {
