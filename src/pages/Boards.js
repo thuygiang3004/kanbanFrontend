@@ -88,7 +88,7 @@ const Boards = () => {
             <article key={_id} style={{ border: "1px solid white" }}>
               <div>
                 <h4 style={{ display: "none" }}>ID: {_id}</h4>
-                <h4>
+                <h3>
                   {" "}
                   Project Title :{" "}
                   <Link
@@ -98,7 +98,7 @@ const Boards = () => {
                   >
                     {board.title}
                   </Link>
-                </h4>
+                </h3>
                 <div>
                   <p> Due Date: {dueDate}</p>
                 </div>

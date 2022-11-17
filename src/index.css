@@ -229,6 +229,9 @@ main a {
 
 article {
   padding: 1rem;
+  margin-bottom: 20px;
+  background-color: rgb(3, 8, 19);
+  border-radius: 15px;
 }
 
 section h2 {
