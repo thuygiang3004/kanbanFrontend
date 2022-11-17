@@ -61,7 +61,7 @@ nav > ul > li {
 .card {
   margin: 0 0 8px 0;
   padding: 3px;
-  position: relative;
+  /* position: relative;*/
   max-width: 100%;
   word-wrap: break-word;
   box-shadow: 0 0 2px #264653;
