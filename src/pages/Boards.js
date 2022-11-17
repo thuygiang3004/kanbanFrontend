@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
-import AddProjectModal from "./AddProjectModal";
 import "./Modal.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,7 +10,6 @@ const urlPostNewProject = "http://localhost:3002/api/boards/";
 const Boards = () => {
   const [loading, setLoading] = useState(true);
   const [boards, setBoards] = useState([]);
-  // const [value, setValue] = useState(0);
 
   const [value, onChange] = useState(new Date());
   const [projectTitle, setProjectTitle] = useState("");

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AddTaskModal from "./AddTaskModal";
 import Card from "./Card";
 import "./Modal.css";
 import { Droppable } from "react-beautiful-dnd";
