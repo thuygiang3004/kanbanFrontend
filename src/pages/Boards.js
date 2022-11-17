@@ -10,7 +10,6 @@ const urlPostNewProject = "http://localhost:3002/api/boards/";
 const Boards = () => {
   const [loading, setLoading] = useState(true);
   const [boards, setBoards] = useState([]);
-  // const [value, setValue] = useState(0);
 
   const [value, onChange] = useState(new Date());
   const [projectTitle, setProjectTitle] = useState("");
