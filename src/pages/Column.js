@@ -6,12 +6,12 @@ import uuid from "react-uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const urlPostNewCard = 'http://localhost:3002/api/cards/';
+const urlPostNewCard = "http://localhost:3002/api/cards/";
 
 const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   // console.log(cardIds);
   const [modal, setModal] = useState(false);
-  const [taskTitle, setTaskTitle] = useState('');
+  const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
   // const [reload, setReload] = useState(false);
   const [cardIdList, setCardIdList] = useState(cardIds);
@@ -25,14 +25,15 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   const fetchCards = () => {
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ columnIds: [columnId] }),
     };
-    fetch('http://localhost:3002/api/cards/getallcards', requestOptions)
+    fetch("http://localhost:3002/api/cards/getallcards", requestOptions)
       .then((response) => response.json())
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
+    console.log(cards);
   };
 
   useEffect(() => {
@@ -48,9 +49,9 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   };
 
   if (modal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add("active-modal");
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove("active-modal");
   }
 
   //Handle when adding task
@@ -66,8 +67,8 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
 
     const addTaskToDB = async ({ taskData }) => {
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: taskData.title,
           dueDate: taskData.dueDate,
