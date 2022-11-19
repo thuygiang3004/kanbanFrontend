@@ -36,6 +36,7 @@ const Boards = () => {
     e.preventDefault();
 
     const addProjectToDB = async ({ projectData }) => {
+
       const addedResult = await axios.post(
         urlPostNewProject,
         JSON.stringify({
@@ -73,25 +74,11 @@ const Boards = () => {
     fetchBoards();
   }, [boards]);
 
-  if (auth.accessToken & loading) {
+  if (loading) {
     return (
       <section>
         <h1>Loading...</h1>
       </section>
-    );
-  }
-
-  if (!auth.accessToken) {
-    return (
-      <>
-        <h2>
-          Please{" "}
-          <Link to={"/login"} style={{ color: "#59c3c3" }}>
-            sign in
-          </Link>{" "}
-          to view your boards
-        </h2>
-      </>
     );
   }
 
