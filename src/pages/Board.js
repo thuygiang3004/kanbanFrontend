@@ -123,6 +123,7 @@ const Board = () => {
         removedColumnCardIds,
         addedColumnCardIds
       );
+      window.location.reload(false);
     }
   };
 
