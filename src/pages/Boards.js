@@ -13,9 +13,9 @@ const Boards = () => {
   const [loading, setLoading] = useState(true);
   const [boards, setBoards] = useState([]);
 
-  const [value, onChange] = useState(new Date());
+  // const [value, onChange] = useState(new Date());
   const [projectTitle, setProjectTitle] = useState("");
-  const [dueDate, setDueDate] = useState(new Date());
+  // const [dueDate, setDueDate] = useState(new Date());
   const [modal, setModal] = useState(false);
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -53,7 +53,7 @@ const Boards = () => {
       setBoards((oldBoards) => [...oldBoards, newBoard]);
     };
 
-    const projectData = { title: projectTitle, dueDate: value };
+    const projectData = { title: projectTitle, dueDate: selectedDate };
     addProjectToDB({ projectData });
 
     toggleModal();

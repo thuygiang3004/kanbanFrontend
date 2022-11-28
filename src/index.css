@@ -134,7 +134,7 @@ input[type="text"],
 input[type="password"],
 .register-form button,
 .login-form button,
-textarea {
+.searchMember button textarea {
   font-family: "Nunito", sans-serif;
   font-size: 22px;
   padding: 0.25rem;
@@ -147,7 +147,8 @@ button {
 }
 
 .register-form button,
-.login-form button {
+.login-form button,
+.searchMember button {
   padding: 0.5rem;
   background-color: #454b1b;
   color: #dfe3e6;
@@ -299,4 +300,11 @@ section h2 {
 .modal .form-control .react-datepicker-popper {
   display: block;
   margin-bottom: 0;
+}
+
+.board-title {
+  display: flex;
+}
+.membersLink {
+  margin-top: 25px;
 }

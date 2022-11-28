@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Routes, Route } from "react-router-dom";
 import Boards from "./pages/Boards";
 import Board from "./pages/Board";
+import Members from "./pages/Members";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/boards" element={<Boards />} />
         <Route path="/board/:id" element={<Board />} />
+        <Route path="/board/members/:id" element={<Members />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
