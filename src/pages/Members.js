@@ -7,6 +7,7 @@ import AuthContext from "../context/AuthProvider";
 const urlSearchMember = "/users/exist";
 const urlAddMember = "boards/members/add";
 const urlGetMembers = "boards/members/all";
+const urlRemoveMember = "boards/members/remove";
 
 export default function Members() {
   const boardId = useParams();
@@ -90,9 +91,24 @@ export default function Members() {
     }
   };
 
-  const handleRemove = () => {
-    //todo
-    console.log("removed");
+  const handleRemove = async (removedMemberId) => {
+    console.log(removedMemberId);
+    console.log(boardId.id);
+    const removeMemberResult = await axios.post(
+      urlRemoveMember,
+      JSON.stringify({
+        memberId: removedMemberId,
+        boardId: boardId.id,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + auth.accessToken,
+        },
+      }
+    );
+    console.log(removeMemberResult);
+    setMessage(`Removed from members list`);
   };
 
   return (
@@ -114,12 +130,13 @@ export default function Members() {
       </div>
       <div>
         <h3>Members List</h3>
-        {members.map((member) => {
+        {members.map((member, index) => {
+          const memberx = members[index];
           return (
-            <div className="members">
-              <p className="member">{member.email}</p>
-              <p className="member">{member.name}</p>
-              <button onClick={handleRemove}>Remove</button>
+            <div className="members" key={memberx._id}>
+              <p className="member">{memberx.email}</p>
+              <p className="member">{memberx.name}</p>
+              <button onClick={() => handleRemove(memberx._id)}>Remove</button>
             </div>
           );
         })}
