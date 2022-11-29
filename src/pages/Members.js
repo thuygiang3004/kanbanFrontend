@@ -122,22 +122,24 @@ export default function Members() {
   return (
     <section>
       <h2>{} Members List</h2>
-      <p>To add new members, please add their email</p>
-      <div className="searchMember">
-        <p className={message ? "errmsg" : "offscreen"} aria-live="assertive">
-          {message}
-        </p>
-        <input
-          type="text"
-          placeholder="Email"
-          onChange={(e) => setSearchEmail(e.target.value)}
-          value={searchEmail}
-          required
-        />
-        <button onClick={handleSearch}>Add</button>
-      </div>
+      {owner && (
+        <div className="searchMember">
+          <p>To add new members, please add their email</p>
+          <p className={message ? "errmsg" : "offscreen"} aria-live="assertive">
+            {message}
+          </p>
+          <input
+            type="text"
+            placeholder="Email"
+            onChange={(e) => setSearchEmail(e.target.value)}
+            value={searchEmail}
+            required
+          />
+          <button onClick={handleSearch}>Add</button>
+          <h3>Members List</h3>
+        </div>
+      )}
       <div>
-        <h3>Members List</h3>
         {members.map((member, index) => {
           const memberx = members[index];
           return (
