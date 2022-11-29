@@ -17,6 +17,8 @@ export default function Members() {
   const [message, setMessage] = useState("");
   const [members, setMembers] = useState([]);
 
+  const [owner, setOwner] = useState(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setMessage("");
@@ -38,12 +40,16 @@ export default function Members() {
       }
     );
     const newMembers = await response.data.members;
+    const projectOwner = newMembers.find((member) => member.isOwner == true);
+    if (projectOwner.email == auth.email) setOwner(true);
+    console.log(newMembers);
+    console.log(owner);
     setMembers(newMembers);
   };
 
   useEffect(() => {
     fetchMembers();
-  }, [members]);
+  }, []);
 
   const handleSearch = async () => {
     //Search for that user email
@@ -94,6 +100,8 @@ export default function Members() {
   const handleRemove = async (removedMemberId) => {
     console.log(removedMemberId);
     console.log(boardId.id);
+    //todo: Dont allow remove project owner
+
     const removeMemberResult = await axios.post(
       urlRemoveMember,
       JSON.stringify({
@@ -136,7 +144,11 @@ export default function Members() {
             <div className="members" key={memberx._id}>
               <p className="member">{memberx.email}</p>
               <p className="member">{memberx.name}</p>
-              <button onClick={() => handleRemove(memberx._id)}>Remove</button>
+              {owner && !memberx.isOwner && (
+                <button onClick={() => handleRemove(memberx._id)}>
+                  Remove
+                </button>
+              )}
             </div>
           );
         })}
