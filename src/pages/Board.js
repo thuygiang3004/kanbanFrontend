@@ -166,6 +166,14 @@ const Board = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <section className="board-title">
         <h1>{boardTitle.title}</h1>
+        <Link
+          className="membersLink"
+          key={boardId.id}
+          to={`/board/members/${boardId.id}`}
+          // state={{ boardTitle: { boardTitle.title } }}
+        >
+          Members
+        </Link>
       </section>
       <section
         // style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 0.3fr" }}
