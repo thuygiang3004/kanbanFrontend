@@ -308,3 +308,13 @@ section h2 {
 .membersLink {
   margin-top: 25px;
 }
+.members {
+  width: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 20px;
+}
+.member {
+  width: 30%;
+  margin: 10px;
+}

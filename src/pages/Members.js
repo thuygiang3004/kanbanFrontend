@@ -10,7 +10,6 @@ const urlGetMembers = "boards/members/all";
 
 export default function Members() {
   const boardId = useParams();
-  //   console.log(boardId);
 
   const [searchEmail, setSearchEmail] = useState("");
   const { auth } = useContext(AuthContext);
@@ -23,27 +22,6 @@ export default function Members() {
     }, 3000);
     return () => clearTimeout(timer);
   }, [message]);
-
-  // useEffect(() => {
-  //   fetchMembers();
-  // }, [members]);
-
-  // async function fetchMembers() {
-  //   const response = await axios.post(
-  //     urlGetMembers,
-  //     JSON.stringify({
-  //       boardId: boardId.id,
-  //     }),
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         authorization: "Bearer " + auth.accessToken,
-  //       },
-  //     }
-  //   );
-  //   setMembers(response.data.members);
-  //   console.log(members);
-  // }
 
   const fetchMembers = async () => {
     const response = await axios.post(
@@ -61,6 +39,7 @@ export default function Members() {
     const newMembers = await response.data.members;
     setMembers(newMembers);
   };
+
   useEffect(() => {
     fetchMembers();
   }, [members]);
@@ -111,6 +90,11 @@ export default function Members() {
     }
   };
 
+  const handleRemove = () => {
+    //todo
+    console.log("removed");
+  };
+
   return (
     <section>
       <h2>{} Members List</h2>
@@ -130,11 +114,15 @@ export default function Members() {
       </div>
       <div>
         <h3>Members List</h3>
-        <ul>
-          {members.map((member) => {
-            return <li>{member.email}</li>;
-          })}
-        </ul>
+        {members.map((member) => {
+          return (
+            <div className="members">
+              <p className="member">{member.email}</p>
+              <p className="member">{member.name}</p>
+              <button onClick={handleRemove}>Remove</button>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
