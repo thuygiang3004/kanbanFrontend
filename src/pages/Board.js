@@ -123,7 +123,7 @@ const Board = () => {
         removedColumnCardIds,
         addedColumnCardIds
       );
-      window.location.reload(false);
+      // window.location.reload(false);
     }
   };
 
@@ -190,6 +190,7 @@ const Board = () => {
               cardIds={columnx.cardIds}
               index={index}
               fetchColumns={fetchColumns}
+              boardId={boardId}
             />
           );
         })}

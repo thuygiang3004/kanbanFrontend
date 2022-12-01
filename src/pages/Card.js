@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Draggable } from 'react-beautiful-dnd';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import './Modal.css';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment/moment';
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Draggable } from "react-beautiful-dnd";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import "./Modal.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment/moment";
 
 const Card = ({
   data,
@@ -15,20 +15,27 @@ const Card = ({
   fetchCards,
   columnId,
   cardIds,
+  members,
+  currentAssignee,
 }) => {
-  const { title, dueDate, cardId } = data;
-  // dateFormat(dueDate, "shortDate");
-  // const newDueDate = dueDate.ToString("yyyy-MM-dd");
+  const { title, dueDate, cardId, assignee } = data;
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [selectedDate, setSelectedDate] = useState(
     dueDate ? new Date(dueDate) : null
   );
-  //   const [selectedDate, setSelectedDate] = useState(
-  //     dueDate ? Date.parse(moment(dueDate, 'MM/DD/YYYY').toISOString()) : null
-  // );
+  // useEffect(() => {
+  //   setSelectedDate(dueDate ? new Date(dueDate) : null);
+  // }, [title]);
+
   const [cardIdList, setCardIdList] = useState(cardIds);
+  const [selectedAssignee, setSelectedAssignee] = useState(
+    currentAssignee ? currentAssignee._id : undefined
+  );
+  useEffect(() => {
+    setSelectedAssignee(currentAssignee ? currentAssignee._id : undefined);
+  }, [currentAssignee]);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -39,15 +46,15 @@ const Card = ({
   };
 
   if (deleteModal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add("active-modal");
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove("active-modal");
   }
 
   if (modal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add("active-modal");
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove("active-modal");
   }
 
   const handleSubmit = async (e) => {
@@ -57,12 +64,13 @@ const Card = ({
       const urlEditCard = `http://localhost:3002/api/cards/card/${taskData.cardId}`;
       console.log(taskData);
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cardId: taskData.cardId,
           title: taskData.taskTitle,
           dueDate: taskData.dueDate,
+          assignee: selectedAssignee,
         }),
       };
       const result = await fetch(urlEditCard, requestOptions).then((response) =>
@@ -71,7 +79,8 @@ const Card = ({
       console.log(result);
       const updatedCard = await result.data;
       setTaskTitle(updatedCard.title);
-      setSelectedDate(updatedCard.dueDate);
+      setSelectedAssignee(updatedCard.assignee);
+      setSelectedDate(new Date(updatedCard.dueDate));
     };
 
     const taskData = {
@@ -90,8 +99,8 @@ const Card = ({
 
     const removeTaskfromDB = async () => {
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cardId: cardId,
           columnId: columnId,
@@ -116,10 +125,10 @@ const Card = ({
     <Draggable draggableId={String(id)} index={index} key={cardId}>
       {(provided, snapshot) => {
         const style = {
-          border: '1px solid black',
-          margin: '10px',
-          background: '#454B1B',
-          color: '#FFFFFF',
+          border: "1px solid black",
+          margin: "10px",
+          background: "#454B1B",
+          color: "#FFFFFF",
           ...provided.draggableProps.style,
         };
 
@@ -133,6 +142,7 @@ const Card = ({
             <div className="card">
               <h4>{title}</h4>
               <p datatype="date">Due: {moment(dueDate).calendar()}</p>
+              <p>Assignee: {assignee?.name}</p>
               <button type="button" className="edit-btn" onClick={toggleModal}>
                 <FaEdit />
               </button>
@@ -167,22 +177,34 @@ const Card = ({
                         </div>
                         <div className="form-group">
                           <label htmlFor="dueDate">Due Date</label>
-                          {
-                            <DatePicker
-                              name="dueDate"
-                              onChange={(date) => setSelectedDate(date)}
-                              selected={selectedDate}
-                              // selected={event.start ? new Date(event.start) : null}
-                              isClearable
-                            />
-
-                            // <DatePicker
-                            // selected={this.state.date}
-                            // onChange={(value)=> {
-                            //   this.setState({date: moment(value)})
-                            //  }}
-                          }
+                          <DatePicker
+                            name="dueDate"
+                            onChange={(date) => setSelectedDate(date)}
+                            selected={selectedDate}
+                            isClearable
+                          />
                         </div>
+
+                        <div className="form-group">
+                          <label htmlFor="assignee">Assignee</label>
+                          <select
+                            name="assignee"
+                            value={selectedAssignee}
+                            onChange={(e) => {
+                              const selectedMember = e.target.value;
+                              setSelectedAssignee(selectedMember);
+                            }}
+                          >
+                            {members.map((member) => {
+                              return (
+                                <option value={member._id}>
+                                  {member.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+
                         <button type="submit" className="submit-btn btn">
                           Submit
                         </button>
@@ -217,11 +239,16 @@ const Card = ({
                         </div>
                         <div className="form-group">
                           <label htmlFor="dueDate">Due Date</label>
-                          <DatePicker
+                          <input
+                            type="text"
                             name="dueDate"
-                            selected={selectedDate}
+                            value={dueDate}
                             disabled
                           />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="assignee">Assignee</label>
+                          <input type="text" value={assignee?.name} disabled />
                         </div>
                         <button type="submit" className="submit-btn btn">
                           Delete

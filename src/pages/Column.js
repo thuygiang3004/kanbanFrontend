@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Card from "./Card";
 import "./Modal.css";
 import { Droppable } from "react-beautiful-dnd";
 import uuid from "react-uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 
 const urlPostNewCard = "http://localhost:3002/api/cards/";
+const urlGetMembers = "boards/members/all";
 
-const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
-  // console.log(cardIds);
+const Column = ({ columnId, title, index, cardIds, fetchColumns, boardId }) => {
   const [modal, setModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
-  // const [reload, setReload] = useState(false);
   const [cardIdList, setCardIdList] = useState(cardIds);
-
-  // const [value, onChange] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [members, setMembers] = useState([]);
+  const [assignee, setAssignee] = useState(members[0]);
+  const [currentAssignee, setCurrentAssignee] = useState();
+  // console.log(currentAssignee?._id);
 
   // Load card data
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState([]);
+  const { auth } = useContext(AuthContext);
   const fetchCards = () => {
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
@@ -33,8 +37,37 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
       .then((response) => response.json())
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
-    console.log(cards);
+    // console.log(cards);
   };
+
+  const fetchMembers = async () => {
+    const response = await axios.post(
+      urlGetMembers,
+      JSON.stringify({
+        boardId: boardId.id,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + auth.accessToken,
+        },
+      }
+    );
+    const newMembers = await response.data.members;
+    const blankMember = {
+      _id: "",
+      name: "",
+      email: "",
+      isOwner: false,
+    };
+    const displayMembers = [blankMember, ...newMembers];
+    // console.log(displayMembers);
+    setMembers(displayMembers);
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, [modal]);
 
   useEffect(() => {
     fetchCards();
@@ -43,6 +76,19 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   useEffect(() => {
     fetchColumns();
   }, [cardIdList]);
+
+  useEffect(() => {
+    cards?.map((card) => {
+      let thisAssignee;
+      if (card.assignee) {
+        thisAssignee = members.find(
+          (member) => member._id.toString() == card.assignee._id.toString()
+        );
+      }
+      setCurrentAssignee(thisAssignee);
+      // console.log(currentAssignee);
+    });
+  }, [cards, cardIds]);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -57,12 +103,14 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
   //Handle when adding task
   const handleSubmit = (e, columnId) => {
     e.preventDefault();
+    console.log(assignee);
     const cardId = uuid();
     const taskData = {
       title: taskTitle,
       dueDate: selectedDate,
       columnId: column,
       cardId: cardId,
+      assignee: assignee,
     };
 
     const addTaskToDB = async ({ taskData }) => {
@@ -74,6 +122,7 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
           dueDate: taskData.dueDate,
           columnId: taskData.columnId,
           cardId: taskData.cardId,
+          assignee: taskData.assignee,
         }),
       };
       const result = await fetch(urlPostNewCard, requestOptions).then(
@@ -103,7 +152,7 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {cardIds.map((cardId, index) => {
               const thisCardId = cardIds[index];
-              let card = cards.find((card) => card.cardId == thisCardId);
+              let card = cards?.find((card) => card.cardId == thisCardId);
               if (card) {
                 return (
                   <Card
@@ -117,6 +166,8 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
                     index={index}
                     fetchCards={fetchCards}
                     cardIds={cardIds}
+                    members={members}
+                    currentAssignee={currentAssignee}
                   />
                 );
               }
@@ -154,6 +205,26 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns }) => {
                         isClearable
                       />
                     </div>
+
+                    <div className="form-group">
+                      <label htmlFor="assignee">Assignee</label>
+                      <select
+                        name="assignee"
+                        value={assignee}
+                        onChange={(e) => {
+                          const selectedMember = e.target.value;
+                          setAssignee(selectedMember);
+                          console.log(assignee);
+                        }}
+                      >
+                        {members.map((member) => {
+                          return (
+                            <option value={member._id}>{member.name}</option>
+                          );
+                        })}
+                      </select>
+                    </div>
+
                     <button type="submit" className="submit-btn btn">
                       Submit
                     </button>
