@@ -7,12 +7,28 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
+import { FaEdit } from "react-icons/fa";
 
 const urlPostNewCard = "http://localhost:3002/api/cards/";
 const urlGetMembers = "boards/members/all";
 
-const Column = ({ columnId, title, index, cardIds, fetchColumns, boardId }) => {
+const Column = ({
+  columnId,
+  title,
+  index,
+  cardIds,
+  fetchColumns,
+  boardId,
+  toggleColModal,
+  isNew,
+  setIsNew,
+  editingColId,
+  setEditingColId,
+  columnTitle,
+  setColumnTitle,
+}) => {
   const [modal, setModal] = useState(false);
+  const [editColModal, setEditColModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
   const [cardIdList, setCardIdList] = useState(cardIds);
@@ -93,8 +109,17 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns, boardId }) => {
   const toggleModal = () => {
     setModal(!modal);
   };
+  // const toggleEditColModal = () => {
+  //   setModal(!editColModal);
+  // };
 
   if (modal) {
+    document.body.classList.add("active-modal");
+  } else {
+    document.body.classList.remove("active-modal");
+  }
+
+  if (editColModal) {
     document.body.classList.add("active-modal");
   } else {
     document.body.classList.remove("active-modal");
@@ -142,7 +167,21 @@ const Column = ({ columnId, title, index, cardIds, fetchColumns, boardId }) => {
     <Droppable droppableId={columnId}>
       {(provided) => (
         <div className="column">
-          <h3>{title}</h3>
+          <div className="column-title-div">
+            <h3>{title}</h3>
+            <button
+              type="button"
+              className="edit-btn"
+              onClick={() => {
+                setIsNew(false);
+                toggleColModal();
+                setEditingColId(columnId);
+                setColumnTitle(title);
+              }}
+            >
+              <FaEdit />
+            </button>
+          </div>
           <div className="add-task-btn-div">
             <button className="add-task-btn btn" onClick={toggleModal}>
               Add task

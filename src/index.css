@@ -79,6 +79,15 @@ nav > ul > li {
 
 .column h3 {
   color: var(--clr-text-primary);
+  margin-right: 10px;
+}
+
+.column-title-div {
+  display: flex;
+}
+.column-title-div button {
+  margin-top: 23px;
+  max-height: 25px;
 }
 
 .card {
