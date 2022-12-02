@@ -123,6 +123,7 @@ const Board = () => {
         removedColumnCardIds,
         addedColumnCardIds
       );
+      fetchColumns();
       // window.location.reload(false);
     }
   };
@@ -141,7 +142,8 @@ const Board = () => {
     const columnId = uuid();
     addColumnToDB(columnTitle, boardId.id, columnId);
     toggleModal();
-    window.location.reload(false);
+    fetchColumns();
+    // window.location.reload(false);
   };
 
   const fetchColumns = async () => {
