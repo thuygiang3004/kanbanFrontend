@@ -301,7 +301,8 @@ section h2 {
   font-weight: bold;
 }
 
-.modal .form-control input {
+.modal .form-control input,
+select {
   background-color: var(--clr-dark);
   color: var(--clr-text-primary);
 }
@@ -309,6 +310,11 @@ section h2 {
 .modal .form-control .react-datepicker-popper {
   display: block;
   margin-bottom: 0;
+}
+
+.modal .assignee {
+  height: 2rem;
+  font-size: 22px;
 }
 
 .board-title {

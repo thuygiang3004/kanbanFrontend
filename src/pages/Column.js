@@ -249,6 +249,7 @@ const Column = ({
                       <label htmlFor="assignee">Assignee</label>
                       <select
                         name="assignee"
+                        className="assignee"
                         value={assignee}
                         onChange={(e) => {
                           const selectedMember = e.target.value;

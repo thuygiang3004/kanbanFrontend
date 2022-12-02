@@ -189,6 +189,7 @@ const Card = ({
                           <label htmlFor="assignee">Assignee</label>
                           <select
                             name="assignee"
+                            className="assignee"
                             value={selectedAssignee}
                             onChange={(e) => {
                               const selectedMember = e.target.value;
