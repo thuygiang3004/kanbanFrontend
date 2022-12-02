@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import { AiOutlineUser } from "react-icons/ai";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
             <Link to="/boards">Boards</Link>
           </li>
           <li>
-            <Link to="/register">Register / Sign In</Link>
+            <Link to="/login">
+              <AiOutlineUser />
+            </Link>
           </li>
         </ul>
       </nav>

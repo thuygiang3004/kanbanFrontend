@@ -79,6 +79,15 @@ nav > ul > li {
 
 .column h3 {
   color: var(--clr-text-primary);
+  margin-right: 10px;
+}
+
+.column-title-div {
+  display: flex;
+}
+.column-title-div button {
+  margin-top: 23px;
+  max-height: 25px;
 }
 
 .card {
@@ -292,7 +301,8 @@ section h2 {
   font-weight: bold;
 }
 
-.modal .form-control input {
+.modal .form-control input,
+select {
   background-color: var(--clr-dark);
   color: var(--clr-text-primary);
 }
@@ -300,6 +310,11 @@ section h2 {
 .modal .form-control .react-datepicker-popper {
   display: block;
   margin-bottom: 0;
+}
+
+.modal .assignee {
+  height: 2rem;
+  font-size: 22px;
 }
 
 .board-title {

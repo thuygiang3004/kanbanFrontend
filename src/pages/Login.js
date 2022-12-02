@@ -6,7 +6,8 @@ import axios from "../api/axios";
 const LOGIN_URL = "/users/login";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
+  console.log(auth);
   const emailRef = useRef();
   const errRef = useRef();
 
@@ -15,9 +16,11 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   emailRef.current.focus();
+  // }, []);
 
   useEffect(() => {
     setErrMsg("");
@@ -57,15 +60,18 @@ const Login = () => {
     }
   };
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    setAuth({});
+  };
+
   return (
     <>
-      {success ? (
+
+      {auth.email ? (
         <section>
-          <h1>You are logged in!</h1>
-          <br />
-          <p>
-            <a href="#">Go to Home</a>
-          </p>
+          <h3>You are logged in as {auth.email}</h3>
+          <button onClick={handleLogout}>Logout</button>
         </section>
       ) : (
         <section>
@@ -107,6 +113,7 @@ const Login = () => {
             </span>
           </p>
         </section>
+   
       )}
     </>
   );

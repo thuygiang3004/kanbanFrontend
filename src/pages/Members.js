@@ -17,6 +17,8 @@ export default function Members() {
   const [message, setMessage] = useState("");
   const [members, setMembers] = useState([]);
 
+  const [owner, setOwner] = useState(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setMessage("");
@@ -38,12 +40,16 @@ export default function Members() {
       }
     );
     const newMembers = await response.data.members;
+    const projectOwner = newMembers.find((member) => member.isOwner == true);
+    if (projectOwner.email == auth.email) setOwner(true);
+    console.log(newMembers);
+    console.log(owner);
     setMembers(newMembers);
   };
 
   useEffect(() => {
     fetchMembers();
-  }, [members]);
+  }, []);
 
   const handleSearch = async () => {
     //Search for that user email
@@ -94,6 +100,8 @@ export default function Members() {
   const handleRemove = async (removedMemberId) => {
     console.log(removedMemberId);
     console.log(boardId.id);
+    //todo: Dont allow remove project owner
+
     const removeMemberResult = await axios.post(
       urlRemoveMember,
       JSON.stringify({
@@ -114,29 +122,35 @@ export default function Members() {
   return (
     <section>
       <h2>{} Members List</h2>
-      <p>To add new members, please add their email</p>
-      <div className="searchMember">
-        <p className={message ? "errmsg" : "offscreen"} aria-live="assertive">
-          {message}
-        </p>
-        <input
-          type="text"
-          placeholder="Email"
-          onChange={(e) => setSearchEmail(e.target.value)}
-          value={searchEmail}
-          required
-        />
-        <button onClick={handleSearch}>Add</button>
-      </div>
+      {owner && (
+        <div className="searchMember">
+          <p>To add new members, please add their email</p>
+          <p className={message ? "errmsg" : "offscreen"} aria-live="assertive">
+            {message}
+          </p>
+          <input
+            type="text"
+            placeholder="Email"
+            onChange={(e) => setSearchEmail(e.target.value)}
+            value={searchEmail}
+            required
+          />
+          <button onClick={handleSearch}>Add</button>
+          <h3>Members List</h3>
+        </div>
+      )}
       <div>
-        <h3>Members List</h3>
         {members.map((member, index) => {
           const memberx = members[index];
           return (
             <div className="members" key={memberx._id}>
               <p className="member">{memberx.email}</p>
               <p className="member">{memberx.name}</p>
-              <button onClick={() => handleRemove(memberx._id)}>Remove</button>
+              {owner && !memberx.isOwner && (
+                <button onClick={() => handleRemove(memberx._id)}>
+                  Remove
+                </button>
+              )}
             </div>
           );
         })}

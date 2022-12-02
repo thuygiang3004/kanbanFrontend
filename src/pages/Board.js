@@ -44,6 +44,24 @@ const addColumnToDB = (title, boardId, columnId) => {
   fetch(urlPostNewColumn, requestOptions).then((response) => response.json());
 };
 
+const urlEditColumn = "http://localhost:3002/api/columns/edit";
+const editColumnToDB = (title, columnId) => {
+  console.log(title);
+  console.log(columnId);
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: title,
+      columnId: columnId,
+    }),
+  };
+  const result = fetch(urlEditColumn, requestOptions).then((response) =>
+    response.json()
+  );
+  console.log(result);
+};
+
 const Board = () => {
   const boardId = useParams();
   const columnsurl = 'http://localhost:3002/api/columns/all/' + boardId.id;
@@ -58,6 +76,10 @@ const Board = () => {
   const [columnTitle, setColumnTitle] = useState('');
 
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const [isNew, setIsNew] = useState(true);
+
+  const [editingColId, setEditingColId] = useState("");
 
   const onDragEnd = (result) => {
     // console.log(result);
@@ -123,11 +145,12 @@ const Board = () => {
         removedColumnCardIds,
         addedColumnCardIds
       );
-      window.location.reload(false);
+      fetchColumns();
+      // window.location.reload(false);
     }
   };
 
-  const toggleModal = () => {
+  const toggleColModal = () => {
     setModal(!modal);
   };
   if (modal) {
@@ -138,10 +161,16 @@ const Board = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const columnId = uuid();
-    addColumnToDB(columnTitle, boardId.id, columnId);
-    toggleModal();
-    window.location.reload(false);
+
+    if (isNew) {
+      const columnId = uuid();
+      addColumnToDB(columnTitle, boardId.id, columnId);
+    } else {
+      editColumnToDB(columnTitle, editingColId);
+    }
+    toggleColModal();
+    fetchColumns();
+    // window.location.reload(false);
   };
 
   const fetchColumns = async () => {
@@ -190,23 +219,37 @@ const Board = () => {
               cardIds={columnx.cardIds}
               index={index}
               fetchColumns={fetchColumns}
+              boardId={boardId}
+              toggleColModal={toggleColModal}
+              isNew={isNew}
+              setIsNew={setIsNew}
+              editingColId={editingColId}
+              setEditingColId={setEditingColId}
+              columnTitle={columnTitle}
+              setColumnTitle={setColumnTitle}
             />
           );
         })}
 
         <div className="newcol-div">
-          {' '}
-          <button className="newcol-btn btn" onClick={toggleModal}>
+          {" "}
+          <button
+            className="newcol-btn btn"
+            onClick={() => {
+              setIsNew(true);
+              toggleColModal();
+            }}
+          >
             Add Swimlane
           </button>
         </div>
 
         {modal && (
           <div className="modal">
-            <div onClick={toggleModal} className="overlay"></div>
+            <div onClick={toggleColModal} className="overlay"></div>
             <div className="modal-content">
               <form onSubmit={handleSubmit}>
-                <h2>Add List</h2>
+                <h2>{isNew ? "Add List" : "Edit List"}</h2>
                 <div className="form-control">
                   <div className="form-group">
                     <label>List Title</label>
@@ -221,7 +264,7 @@ const Board = () => {
                     Submit
                   </button>
                 </div>
-                <button className="close-modal" onClick={toggleModal}>
+                <button className="close-modal" onClick={toggleColModal}>
                   &times;
                 </button>
               </form>
