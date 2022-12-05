@@ -10,10 +10,15 @@
   --clr-text-secondary: black;
 }
 
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +26,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
@@ -29,13 +34,36 @@ main {
   min-height: 100vh;
   background-color: var(--clr-medium);
   color: var(--clr-text-primary);
-  padding: 40px;
+}
+
+/*  Navbar */
+.logo {
+  height: 90px;
+}
+
+.nav-container {
+  width: 1200px;
+  margin: auto;
 }
 
 nav {
   background-color: var(--clr-dark);
-  text-align: center;
-  padding: 20px 0;
+  padding: 0px 0;
+  border-bottom: 1px solid #676767;
+  padding-block: 5px;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-links ul {
+  display: flex;
+}
+
+nav li {
+  padding: 0 20px;
 }
 
 nav a {
@@ -43,11 +71,14 @@ nav a {
   font-weight: bold;
   color: white;
   text-decoration: none;
-  padding: 0 40px;
+  padding: 0 10px;
 }
 nav a:hover {
-  color: var(--clr-accent-primary);
-  text-decoration: underline;
+  /* color: var(--clr-accent-primary); */
+  /* text-decoration: underline; */
+  /* box-shadow: 0px 6px 0px 0px var(--clr-accent-primary); */
+  box-shadow: 0 3px var(--clr-accent-primary);
+  transition: background 0.1s, box-shadow 0.3s, color 0.1s;
 }
 nav ul {
   list-style-type: none;
@@ -139,12 +170,12 @@ a:visited {
   color: #fff;
 } */
 
-input[type="text"],
-input[type="password"],
+input[type='text'],
+input[type='password'],
 .register-form button,
 .login-form button,
 .searchMember button textarea {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 22px;
   padding: 0.25rem;
   border-radius: 0.5rem;
@@ -155,13 +186,13 @@ button {
   margin-top: 1rem;
 }
 
-.register-form button,
+/* .register-form button,
 .login-form button,
 .searchMember button {
   padding: 0.5rem;
   background-color: #454b1b;
   color: #dfe3e6;
-}
+} */
 
 .instructions {
   font-size: 0.75rem;
@@ -206,6 +237,7 @@ button {
 
 .line {
   display: inline-block;
+  padding-top: 1em;
 }
 .card h4 {
   margin: 0;
@@ -332,4 +364,89 @@ select {
 .member {
   width: 30%;
   margin: 10px;
+}
+
+/*  HOMEPAGE */
+main .container {
+  max-width: 1200px;
+  padding-block: 6em;
+  margin: auto;
+}
+
+.hero-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-bottom: 3em;
+}
+
+.hero-section h1 {
+  font-size: 2rem;
+}
+.hero-img {
+  width: 150%;
+}
+
+.nav-icon {
+  padding-left: 0.5em;
+}
+
+.hero-text {
+  padding-top: 2.5em;
+  padding-left: 2em;
+  padding-right: 10em;
+}
+
+.home-btn {
+  padding: 1rem;
+  font-size: 1em;
+}
+
+.bottom-section h2 {
+  text-align: center;
+  font-size: 1.5rem;
+}
+.bottom-section p {
+  max-width: 600px;
+  line-height: 24px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.boards-centered {
+  padding-top: 8rem;
+  text-align: center;
+}
+
+.boards-login {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+}
+
+.boards-login:hover {
+  color: white;
+  box-shadow: 0 3px var(--clr-accent-primary);
+  transition: background 0.1s, box-shadow 0.3s, color 0.1s;
+}
+
+.login-container {
+  padding-top: 5rem;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.register-sign-in {
+  display: flex;
+  list-style: none;
+  justify-content: space-around;
+  padding: 0;
+  padding-inline: 4em;
+}
+
+.register-sign-in .sign-login {
+  box-shadow: 0 2px white;
+  text-decoration: none;
+}
+
+.register-sign-in .sign-login:hover {
+  box-shadow: 0 2px var(--clr-accent-primary);
 }
