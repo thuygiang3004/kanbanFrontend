@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import axios from "../api/axios";
 const LOGIN_URL = "/users/login";
@@ -16,7 +17,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
- // const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // useEffect(() => {
   //   emailRef.current.focus();
@@ -46,6 +47,7 @@ const Login = () => {
       setEmail("");
       setPwd("");
       setSuccess(true);
+      navigate("/boards");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -67,11 +69,14 @@ const Login = () => {
 
   return (
     <>
-
       {auth.email ? (
         <section>
-          <h3>You are logged in as {auth.email}</h3>
-          <button onClick={handleLogout}>Logout</button>
+          <div className="login-container">
+            <h3>You are logged in as {auth.email}</h3>
+            <button className="btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </section>
       ) : (
         <section>
@@ -82,38 +87,40 @@ const Login = () => {
           >
             {errMsg}
           </p>
-          <h1>Sign In</h1>
-          <form onSubmit={handleSubmit} className="login-form">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="text"
-              id="email"
-              ref={emailRef}
-              autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              required
-            />
+          <div className="login-container">
+            <h1>Sign In</h1>
+            <form onSubmit={handleSubmit} className="login-form">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="text"
+                id="email"
+                ref={emailRef}
+                autoComplete="off"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                required
+              />
 
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
-              required
-            />
-            <button>Sign In</button>
-          </form>
-          <p>
-            Need an Account?
-            <br />
-            <span className="line">
-              <Link to={"/register"}>Sign Up</Link>
-            </span>
-          </p>
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                onChange={(e) => setPwd(e.target.value)}
+                value={pwd}
+                required
+              />
+              <button className="btn login-btn">Sign In</button>
+            </form>
+            <ul className="register-sign-in">
+              <li>Need an Account?</li>
+              <li>
+                <Link className="sign-login" to={"/register"}>
+                  Sign Up
+                </Link>
+              </li>
+            </ul>
+          </div>
         </section>
-   
       )}
     </>
   );
