@@ -16,7 +16,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
 
   // useEffect(() => {
   //   emailRef.current.focus();
