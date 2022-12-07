@@ -17,8 +17,8 @@ html:focus-within {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,7 +26,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -170,12 +170,12 @@ a:visited {
   color: #fff;
 } */
 
-input[type='text'],
-input[type='password'],
+input[type="text"],
+input[type="password"],
 .register-form button,
 .login-form button,
 .searchMember button textarea {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 22px;
   padding: 0.25rem;
   border-radius: 0.5rem;
@@ -383,7 +383,8 @@ main .container {
   font-size: 2rem;
 }
 .hero-img {
-  width: 150%;
+  height: 100%;
+  width: 140%;
 }
 
 .nav-icon {
@@ -406,7 +407,7 @@ main .container {
   font-size: 1.5rem;
 }
 .bottom-section p {
-  max-width: 600px;
+  max-width: 1200px;
   line-height: 24px;
   margin-inline: auto;
   text-align: center;

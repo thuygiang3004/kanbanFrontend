@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import './Modal.css';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import axios from '../api/axios';
-import AuthContext from '../context/AuthProvider';
+import React, { useState, useEffect, useReducer, useContext } from "react";
+import { Link } from "react-router-dom";
+import "./Modal.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 
-const urlGetBoards = 'http://localhost:3002/api/boards/all';
-const urlPostNewProject = 'http://localhost:3002/api/boards/';
+const urlGetBoards = "http://localhost:3002/api/boards/all";
+const urlPostNewProject = "http://localhost:3002/api/boards/";
 
 const Boards = () => {
   const [loading, setLoading] = useState(true);
   const [boards, setBoards] = useState([]);
 
   // const [value, onChange] = useState(new Date());
-  const [projectTitle, setProjectTitle] = useState('');
+  const [projectTitle, setProjectTitle] = useState("");
   // const [dueDate, setDueDate] = useState(new Date());
   const [modal, setModal] = useState(false);
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -27,9 +27,9 @@ const Boards = () => {
   };
 
   if (modal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add("active-modal");
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove("active-modal");
   }
 
   const handleSubmit = async (e) => {
@@ -44,8 +44,8 @@ const Boards = () => {
         }),
         {
           headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + auth.accessToken,
+            "Content-Type": "application/json",
+            authorization: "Bearer " + auth.accessToken,
           },
         }
       );
@@ -62,7 +62,7 @@ const Boards = () => {
   const fetchBoards = async () => {
     const response = await axios.get(urlGetBoards, {
       headers: {
-        authorization: 'Bearer ' + auth.accessToken,
+        authorization: "Bearer " + auth.accessToken,
       },
     });
     const newBoards = await response.data.boards;
@@ -73,7 +73,7 @@ const Boards = () => {
     fetchBoards();
   }, [boards]);
 
-  if (auth.accessToken & loading) {
+  if (loading) {
     return (
       <section>
         <h1>Loading...</h1>
@@ -86,17 +86,16 @@ const Boards = () => {
       <>
         <div className="boards-centered">
           <h2>
-            Please{' '}
-            <Link to={'/login'} className="boards-login">
+            Please{" "}
+            <Link to={"/login"} className="boards-login">
               sign in
-            </Link>{' '}
+            </Link>{" "}
             to view your boards
           </h2>
         </div>
       </>
     );
   }
-
   return (
     <section>
       <div className="boards-section">
@@ -108,12 +107,12 @@ const Boards = () => {
         {boards.map((board) => {
           const { _id, title, dueDate } = board;
           return (
-            <article key={_id} style={{ border: '1px solid white' }}>
+            <article key={_id} style={{ border: "1px solid white" }}>
               <div>
-                <h4 style={{ display: 'none' }}>ID: {_id}</h4>
+                <h4 style={{ display: "none" }}>ID: {_id}</h4>
                 <h3>
-                  {' '}
-                  Project Title :{' '}
+                  {" "}
+                  Project Title :{" "}
                   <Link
                     key={_id}
                     to={`/board/${_id}`}

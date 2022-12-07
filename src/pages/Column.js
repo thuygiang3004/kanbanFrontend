@@ -28,6 +28,7 @@ const Column = ({
   setColumnTitle,
 }) => {
   const [modal, setModal] = useState(false);
+
   const [editColModal, setEditColModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [column, setColumn] = useState(columnId);
