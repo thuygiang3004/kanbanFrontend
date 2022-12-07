@@ -368,9 +368,11 @@ select {
 
 /*  HOMEPAGE */
 main .container {
-  max-width: 1200px;
-  padding-block: 6em;
-  margin: auto;
+  /* max-width: 1200px; */
+  padding-block-start: 6em;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* margin: auto; */
 }
 
 .hero-section {
@@ -384,7 +386,7 @@ main .container {
 }
 .hero-img {
   height: 100%;
-  width: 140%;
+  width: 100%;
 }
 
 .nav-icon {
@@ -394,7 +396,7 @@ main .container {
 .hero-text {
   padding-top: 2.5em;
   padding-left: 2em;
-  padding-right: 10em;
+  padding-right: 5em;
 }
 
 .home-btn {

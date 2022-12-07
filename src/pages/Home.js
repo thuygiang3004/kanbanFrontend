@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Home extends Component {
   render() {
@@ -24,7 +24,7 @@ export default class Home extends Component {
           <h2>What is Kanban?</h2>
           <p>
             EasyKan is a project management tool that gives users full
-            tranaparency of work. Improve project flow and maximize efficiency
+            transparency of work. Improves project flow and maximizes efficiency
             by getting a visual representation of tasks on a kanban board, team
             members can see the state of every task at any time and plan
             accordingly.
