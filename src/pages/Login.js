@@ -17,7 +17,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   emailRef.current.focus();
@@ -47,7 +47,7 @@ const Login = () => {
       setEmail("");
       setPwd("");
       setSuccess(true);
-      navigate("/boards");
+      // navigate("/boards");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
