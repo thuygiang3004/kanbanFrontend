@@ -1,40 +1,40 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from "react";
 import {
   faCheck,
   faTimes,
   faInfoCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from '../api/axios';
-import { Link } from 'react-router-dom';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "../api/axios";
+import { Link } from "react-router-dom";
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = 'users/register';
+const REGISTER_URL = "users/register";
 
 const Register = () => {
   const emailRef = useRef();
   const userRef = useRef();
   const errRef = useRef();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
 
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
-  const [pwd, setPwd] = useState('');
+  const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
-  const [matchPwd, setMatchPwd] = useState('');
+  const [matchPwd, setMatchPwd] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Register = () => {
   }, [pwd, matchPwd]);
 
   useEffect(() => {
-    setErrMsg('');
+    setErrMsg("");
   }, [user, pwd, matchPwd]);
 
   const handleSubmit = async (e) => {
@@ -65,7 +65,7 @@ const Register = () => {
     const v1 = USER_REGEX.test(user);
     const v2 = PWD_REGEX.test(pwd);
     if (!v1 || !v2) {
-      setErrMsg('Invalid Entry');
+      setErrMsg("Invalid Entry");
       return;
     }
     try {
@@ -78,7 +78,7 @@ const Register = () => {
           password2: matchPwd,
         }),
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
           // withCredentials: true,
         }
       );
@@ -88,17 +88,17 @@ const Register = () => {
       setSuccess(true);
       //clear state and controlled inputs
       //need value attrib on inputs for this
-      setEmail('');
-      setUser('');
-      setPwd('');
-      setMatchPwd('');
+      setEmail("");
+      setUser("");
+      setPwd("");
+      setMatchPwd("");
     } catch (err) {
       if (!err?.response) {
-        setErrMsg('No Server Response');
+        setErrMsg("No Server Response");
       } else if (err.response?.status === 409) {
-        setErrMsg('User with this email already exists');
+        setErrMsg("User with this email already exists");
       } else {
-        setErrMsg('Registration Failed');
+        setErrMsg("Registration Failed");
       }
       errRef.current.focus();
     }
@@ -108,14 +108,16 @@ const Register = () => {
     <>
       {success ? (
         <section>
-          <h1>Success!</h1>
-          <Link to={'/login'}>Sign In</Link>
+          <div className="text-alignment">
+            <h1>Congratulations! Your registration is successful.</h1>
+            <Link to={"/login"}>Sign In</Link>
+          </div>
         </section>
       ) : (
         <section>
           <p
             ref={errRef}
-            className={errMsg ? 'errmsg' : 'offscreen'}
+            className={errMsg ? "errmsg" : "offscreen"}
             aria-live="assertive"
           >
             {errMsg}
@@ -127,11 +129,11 @@ const Register = () => {
                 Email:
                 <FontAwesomeIcon
                   icon={faCheck}
-                  className={validEmail ? 'valid' : 'hide'}
+                  className={validEmail ? "valid" : "hide"}
                 />
                 <FontAwesomeIcon
                   icon={faTimes}
-                  className={validEmail || !email ? 'hide' : 'invalid'}
+                  className={validEmail || !email ? "hide" : "invalid"}
                 />
               </label>
               <input
@@ -142,7 +144,7 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 required
-                aria-invalid={validEmail ? 'false' : 'true'}
+                aria-invalid={validEmail ? "false" : "true"}
                 aria-describedby="uidnote"
                 onFocus={() => setEmailFocus(true)}
                 onBlur={() => setEmailFocus(false)}
@@ -152,11 +154,11 @@ const Register = () => {
                 Username:
                 <FontAwesomeIcon
                   icon={faCheck}
-                  className={validName ? 'valid' : 'hide'}
+                  className={validName ? "valid" : "hide"}
                 />
                 <FontAwesomeIcon
                   icon={faTimes}
-                  className={validName || !user ? 'hide' : 'invalid'}
+                  className={validName || !user ? "hide" : "invalid"}
                 />
               </label>
               <input
@@ -167,7 +169,7 @@ const Register = () => {
                 onChange={(e) => setUser(e.target.value)}
                 value={user}
                 required
-                aria-invalid={validName ? 'false' : 'true'}
+                aria-invalid={validName ? "false" : "true"}
                 aria-describedby="uidnote"
                 onFocus={() => setUserFocus(true)}
                 onBlur={() => setUserFocus(false)}
@@ -175,7 +177,7 @@ const Register = () => {
               <p
                 id="uidnote"
                 className={
-                  userFocus && user && !validName ? 'instructions' : 'offscreen'
+                  userFocus && user && !validName ? "instructions" : "offscreen"
                 }
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
@@ -190,11 +192,11 @@ const Register = () => {
                 Password:
                 <FontAwesomeIcon
                   icon={faCheck}
-                  className={validPwd ? 'valid' : 'hide'}
+                  className={validPwd ? "valid" : "hide"}
                 />
                 <FontAwesomeIcon
                   icon={faTimes}
-                  className={validPwd || !pwd ? 'hide' : 'invalid'}
+                  className={validPwd || !pwd ? "hide" : "invalid"}
                 />
               </label>
               <input
@@ -203,14 +205,14 @@ const Register = () => {
                 onChange={(e) => setPwd(e.target.value)}
                 value={pwd}
                 required
-                aria-invalid={validPwd ? 'false' : 'true'}
+                aria-invalid={validPwd ? "false" : "true"}
                 aria-describedby="pwdnote"
                 onFocus={() => setPwdFocus(true)}
                 onBlur={() => setPwdFocus(false)}
               />
               <p
                 id="pwdnote"
-                className={pwdFocus && !validPwd ? 'instructions' : 'offscreen'}
+                className={pwdFocus && !validPwd ? "instructions" : "offscreen"}
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
                 8 to 24 characters.
@@ -218,11 +220,11 @@ const Register = () => {
                 Must include uppercase and lowercase letters, a number and a
                 special character.
                 <br />
-                Allowed special characters:{' '}
-                <span aria-label="exclamation mark">!</span>{' '}
-                <span aria-label="at symbol">@</span>{' '}
-                <span aria-label="hashtag">#</span>{' '}
-                <span aria-label="dollar sign">$</span>{' '}
+                Allowed special characters:{" "}
+                <span aria-label="exclamation mark">!</span>{" "}
+                <span aria-label="at symbol">@</span>{" "}
+                <span aria-label="hashtag">#</span>{" "}
+                <span aria-label="dollar sign">$</span>{" "}
                 <span aria-label="percent">%</span>
               </p>
 
@@ -230,11 +232,11 @@ const Register = () => {
                 Confirm Password:
                 <FontAwesomeIcon
                   icon={faCheck}
-                  className={validMatch && matchPwd ? 'valid' : 'hide'}
+                  className={validMatch && matchPwd ? "valid" : "hide"}
                 />
                 <FontAwesomeIcon
                   icon={faTimes}
-                  className={validMatch || !matchPwd ? 'hide' : 'invalid'}
+                  className={validMatch || !matchPwd ? "hide" : "invalid"}
                 />
               </label>
               <input
@@ -243,7 +245,7 @@ const Register = () => {
                 onChange={(e) => setMatchPwd(e.target.value)}
                 value={matchPwd}
                 required
-                aria-invalid={validMatch ? 'false' : 'true'}
+                aria-invalid={validMatch ? "false" : "true"}
                 aria-describedby="confirmnote"
                 onFocus={() => setMatchFocus(true)}
                 onBlur={() => setMatchFocus(false)}
@@ -251,7 +253,7 @@ const Register = () => {
               <p
                 id="confirmnote"
                 className={
-                  matchFocus && !validMatch ? 'instructions' : 'offscreen'
+                  matchFocus && !validMatch ? "instructions" : "offscreen"
                 }
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
@@ -268,7 +270,7 @@ const Register = () => {
             <ul className="register-sign-in">
               <li>Already Registered?</li>
               <li>
-                <Link className="sign-login" to={'/login'}>
+                <Link className="sign-login" to={"/login"}>
                   Log in
                 </Link>
               </li>
