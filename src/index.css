@@ -453,3 +453,8 @@ main .container {
 .register-sign-in .sign-login:hover {
   box-shadow: 0 2px var(--clr-accent-primary);
 }
+
+.text-alignment {
+  padding-block: 15%;
+  text-align: center;
+}
