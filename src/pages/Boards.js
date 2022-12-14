@@ -73,13 +73,13 @@ const Boards = () => {
     fetchBoards();
   }, [boards]);
 
-  if (loading) {
-    return (
-      <section>
-        <h1>Loading...</h1>
-      </section>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <section>
+  //       <h1>Loading...</h1>
+  //     </section>
+  //   );
+  // }
 
   if (!auth.accessToken) {
     return (
