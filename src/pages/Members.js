@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
@@ -18,6 +18,8 @@ export default function Members() {
   const [members, setMembers] = useState([]);
 
   const [owner, setOwner] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -94,6 +96,7 @@ export default function Members() {
       console.log(addMemberResult);
       setSearchEmail("");
       setMessage(`Added ${searchEmail.toLowerCase()} to members list`);
+      fetchMembers();
     }
   };
 
@@ -117,10 +120,11 @@ export default function Members() {
     );
     console.log(removeMemberResult);
     setMessage(`Removed from members list`);
+    fetchMembers();
   };
 
   return (
-    <section>
+    <main className="container">
       <h2>{} Members List</h2>
       {owner && (
         <div className="searchMember">
@@ -135,7 +139,9 @@ export default function Members() {
             value={searchEmail}
             required
           />
-          <button onClick={handleSearch}>Add</button>
+          <button className="btn" onClick={handleSearch}>
+            Add Member
+          </button>
           <h3>Members List</h3>
         </div>
       )}
@@ -155,6 +161,9 @@ export default function Members() {
           );
         })}
       </div>
-    </section>
+      <button className="backLink" onClick={() => navigate(-1)}>
+        Go back to Board
+      </button>
+    </main>
   );
 }
