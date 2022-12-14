@@ -368,11 +368,11 @@ select {
 
 /*  HOMEPAGE */
 main .container {
-  /* max-width: 1200px; */
+  max-width: 1200px;
   padding-block-start: 6em;
   padding-left: 10px;
   padding-right: 10px;
-  /* margin: auto; */
+  margin: auto;
 }
 
 .hero-section {

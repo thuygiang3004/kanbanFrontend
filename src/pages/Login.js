@@ -47,7 +47,7 @@ const Login = () => {
       setEmail("");
       setPwd("");
       setSuccess(true);
-      // navigate("/boards");
+      navigate("/boards");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
