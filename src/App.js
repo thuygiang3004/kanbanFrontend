@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
-import Boards from './pages/Boards';
-import Board from './pages/Board';
-import Members from './pages/Members';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
-import { AiOutlineUser } from 'react-icons/ai';
+import React from "react";
+import { Link, Routes, Route } from "react-router-dom";
+import Boards from "./pages/Boards";
+import Board from "./pages/Board";
+import Members from "./pages/Members";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import { AiOutlineUser } from "react-icons/ai";
 
 function App() {
   return (

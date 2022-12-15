@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import uuid from 'react-uuid';
-import Column from './Column';
-import { DragDropContext } from 'react-beautiful-dnd';
-import './Modal.css';
+import React, { useState, useEffect, useReducer } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import uuid from "react-uuid";
+import Column from "./Column";
+import { DragDropContext } from "react-beautiful-dnd";
+import "./Modal.css";
 
 const urlReorderCardSameColumn =
-  'http://localhost:3002/api/cards/reorder/samecolumn';
+  "http://localhost:3002/api/cards/reorder/samecolumn";
 const reorderCardSameColumn = (columnId, cardIds) => {
   console.log(columnId);
   console.log(cardIds);
   const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       sameColumnId: columnId,
       samecolumnCardIds: cardIds,
@@ -25,46 +25,11 @@ const reorderCardSameColumn = (columnId, cardIds) => {
 };
 
 const urlReorderCardDifferentColumn =
-  'http://localhost:3002/api/cards/reorder/differentcolumn';
-
-const urlPostNewColumn = 'http://localhost:3002/api/columns/';
-const addColumnToDB = (title, boardId, columnId) => {
-  console.log(title);
-  console.log(boardId);
-  console.log(columnId);
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: title,
-      columnId: columnId,
-      boardId: boardId,
-    }),
-  };
-  fetch(urlPostNewColumn, requestOptions).then((response) => response.json());
-};
-
-const urlEditColumn = "http://localhost:3002/api/columns/edit";
-const editColumnToDB = (title, columnId) => {
-  console.log(title);
-  console.log(columnId);
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: title,
-      columnId: columnId,
-    }),
-  };
-  const result = fetch(urlEditColumn, requestOptions).then((response) =>
-    response.json()
-  );
-  console.log(result);
-};
+  "http://localhost:3002/api/cards/reorder/differentcolumn";
 
 const Board = () => {
   const boardId = useParams();
-  const columnsurl = 'http://localhost:3002/api/columns/all/' + boardId.id;
+  const columnsurl = "http://localhost:3002/api/columns/all/" + boardId.id;
 
   const [loading, setLoading] = useState(true);
   const [columns, setColumns] = useState([]);
@@ -73,7 +38,7 @@ const Board = () => {
   const { boardTitle } = location.state;
 
   const [modal, setModal] = useState(false);
-  const [columnTitle, setColumnTitle] = useState('');
+  const [columnTitle, setColumnTitle] = useState("");
 
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
 
@@ -110,8 +75,8 @@ const Board = () => {
       addedColumnCardIds
     ) => {
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           reorderedCardId: pulledOutCardId,
           removedColumnId: removedColumnId,
@@ -150,13 +115,50 @@ const Board = () => {
     }
   };
 
+  const urlPostNewColumn = "http://localhost:3002/api/columns/";
+  const addColumnToDB = (title, boardId, columnId) => {
+    console.log(title);
+    console.log(boardId);
+    console.log(columnId);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        columnId: columnId,
+        boardId: boardId,
+      }),
+    };
+    fetch(urlPostNewColumn, requestOptions).then((response) => response.json());
+    fetchColumns();
+  };
+
+  const urlEditColumn = "http://localhost:3002/api/columns/edit";
+  const editColumnToDB = (title, columnId) => {
+    console.log(title);
+    console.log(columnId);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        columnId: columnId,
+      }),
+    };
+    const result = fetch(urlEditColumn, requestOptions).then((response) =>
+      response.json()
+    );
+    console.log(result);
+    fetchColumns();
+  };
+
   const toggleColModal = () => {
     setModal(!modal);
   };
   if (modal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add("active-modal");
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove("active-modal");
   }
 
   const handleSubmit = (e) => {
