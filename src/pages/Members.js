@@ -103,7 +103,6 @@ export default function Members() {
   const handleRemove = async (removedMemberId) => {
     console.log(removedMemberId);
     console.log(boardId.id);
-    //todo: Dont allow remove project owner
 
     const removeMemberResult = await axios.post(
       urlRemoveMember,
@@ -152,7 +151,8 @@ export default function Members() {
             <div className="members" key={memberx._id}>
               <p className="member">{memberx.email}</p>
               <p className="member">{memberx.name}</p>
-              {owner && !memberx.isOwner && (
+              {((owner && !memberx.isOwner) ||
+                (!owner && auth.email == memberx.email)) && (
                 <button onClick={() => handleRemove(memberx._id)}>
                   Remove
                 </button>
