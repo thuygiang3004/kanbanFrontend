@@ -61,7 +61,7 @@ const Card = ({
     e.preventDefault();
 
     const editTaskInDB = async ({ taskData }) => {
-      const urlEditCard = `http://localhost:3002/api/cards/card/${taskData.cardId}`;
+      const urlEditCard = `https://easykan1.herokuapp.com/api/cards/card/${taskData.cardId}`;
       console.log(taskData);
       const requestOptions = {
         method: "POST",
@@ -95,7 +95,7 @@ const Card = ({
   const handleDeleteSubmit = (e) => {
     e.preventDefault();
 
-    const urlRemoveCard = `http://localhost:3002/api/cards/card/remove/${cardId}`;
+    const urlRemoveCard = `https://easykan1.herokuapp.com/api/cards/card/remove/${cardId}`;
 
     const removeTaskfromDB = async () => {
       const requestOptions = {
