@@ -6,8 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 
-const urlGetBoards = "https://easykan1.herokuapp.com/api/boards/all";
-const urlPostNewProject = "https://easykan1.herokuapp.com/api/boards/";
+const urlGetBoards = "http://localhost:3002/api/boards/all";
+const urlPostNewProject = "http://localhost:3002/api/boards/";
 
 const Boards = () => {
   const [loading, setLoading] = useState(true);

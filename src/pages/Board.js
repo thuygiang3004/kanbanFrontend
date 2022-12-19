@@ -7,7 +7,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import "./Modal.css";
 
 const urlReorderCardSameColumn =
-  "https://easykan1.herokuapp.com/api/cards/reorder/samecolumn";
+  "http://localhost:3002/api/cards/reorder/samecolumn";
 const reorderCardSameColumn = (columnId, cardIds) => {
   console.log(columnId);
   console.log(cardIds);
@@ -25,12 +25,11 @@ const reorderCardSameColumn = (columnId, cardIds) => {
 };
 
 const urlReorderCardDifferentColumn =
-  "https://easykan1.herokuapp.com/api/cards/reorder/differentcolumn";
+  "http://localhost:3002/api/cards/reorder/differentcolumn";
 
 const Board = () => {
   const boardId = useParams();
-  const columnsurl =
-    "https://easykan1.herokuapp.com/api/columns/all/" + boardId.id;
+  const columnsurl = "http://localhost:3002/api/columns/all/" + boardId.id;
 
   const [loading, setLoading] = useState(true);
   const [columns, setColumns] = useState([]);
@@ -116,7 +115,7 @@ const Board = () => {
     }
   };
 
-  const urlPostNewColumn = "https://easykan1.herokuapp.com/api/columns/";
+  const urlPostNewColumn = "http://localhost:3002/api/columns/";
   const addColumnToDB = (title, boardId, columnId) => {
     console.log(title);
     console.log(boardId);
@@ -134,7 +133,7 @@ const Board = () => {
     fetchColumns();
   };
 
-  const urlEditColumn = "https://easykan1.herokuapp.com/api/columns/edit";
+  const urlEditColumn = "http://localhost:3002/api/columns/edit";
   const editColumnToDB = (title, columnId) => {
     console.log(title);
     console.log(columnId);

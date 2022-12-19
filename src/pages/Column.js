@@ -9,7 +9,7 @@ import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 
-const urlPostNewCard = "https://easykan1.herokuapp.com/api/cards/";
+const urlPostNewCard = "http://localhost:3002/api/cards/";
 const urlGetMembers = "boards/members/all";
 
 const Column = ({
@@ -50,10 +50,7 @@ const Column = ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ columnIds: [columnId] }),
     };
-    fetch(
-      "https://easykan1.herokuapp.com/api/cards/getallcards",
-      requestOptions
-    )
+    fetch("http://localhost:3002/api/cards/getallcards", requestOptions)
       .then((response) => response.json())
       .then((data) => setCards(data.cards[0]))
       .then(setLoading(false));
